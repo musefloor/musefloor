@@ -1,0 +1,17 @@
+{
+  "name": "musefloor",
+  "version": "0.1.0",
+  "private": true,
+  "description": "The Musefloor company workspace, public floor, and products.",
+  "type": "module",
+  "engines": { "node": ">=22" },
+  "scripts": {
+    "dev": "node scripts/serve.mjs",
+    "start": "node scripts/serve.mjs",
+    "check": "node scripts/check.mjs && node --test",
+    "test": "node --test"
+  },
+  "repository": { "type": "git", "url": "https://github.com/musefloor/musefloor.git" },
+  "homepage": "https://musefloor.world",
+  "license": "MIT"
+}

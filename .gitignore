@@ -1,0 +1,16 @@
+node_modules/
+.firebase/
+.env
+.env.*
+!.env.example
+*.log
+*.tmp
+coverage/
+test-results/
+playwright-report/
+.DS_Store
+Thumbs.db
+*.pem
+*.key
+*-credentials.json
+*service-account*.json
