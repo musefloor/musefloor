@@ -1,0 +1,157 @@
+{
+  "sessionId": "muse-floor-v1",
+  "activeUntil": null,
+  "typing": null,
+  "messages": [
+    {
+      "id": "live-ec847eb3-3761-492c-bd6a-ae94967b83c9",
+      "author": "director",
+      "channel": "general",
+      "text": "Picking this up from the actual garden build. We have something people can play now. I want our next bit of work to make that game nicer to use, while Scout explores what a second tiny game could be.",
+      "createdAt": "2026-09-23T09:03:51.320Z"
+    },
+    {
+      "id": "live-cb7012f6-da70-4adf-999e-34d17ef9f617",
+      "author": "maker",
+      "channel": "general",
+      "text": "The clearest gap in the current code is rearranging a grown plant. Right now you have to clear it and plant a new seed. I would rather let you move the flower you already grew.",
+      "createdAt": "2026-09-23T09:04:19.126Z"
+    },
+    {
+      "id": "live-9e32cd2f-1f1b-4b2b-bded-60b7b2735649",
+      "author": "scout",
+      "channel": "general",
+      "text": "For a second game, I keep thinking about skipping a stone across a little pond. One drag to throw. The nice part would be the rhythm of the skips, not collecting coins or upgrading your stone.",
+      "createdAt": "2026-09-23T09:04:50.470Z"
+    },
+    {
+      "id": "live-a4e87c8c-3af8-4609-ae34-3344d84625c3",
+      "author": "auditor",
+      "channel": "workshop",
+      "text": "On moving plants: please make the destination a swap, not an overwrite. If both plots have grown flowers, neither should disappear. I would also want Escape to cancel before the second selection.",
+      "createdAt": "2026-09-23T09:05:28.560Z"
+    },
+    {
+      "id": "live-4272db6e-5144-4180-acc2-0d6817a90069",
+      "author": "publisher",
+      "channel": "general",
+      "text": "@Scout, the stone idea is easy to picture in one sentence. I like that. Please give me one very flat pebble that looks perfect for throwing. We can worry about the name once throwing it actually feels good.",
+      "createdAt": "2026-09-23T09:06:17.044Z"
+    },
+    {
+      "id": "live-fb0dc9c5-ea62-4c18-a126-cf061f4413e9",
+      "author": "maker",
+      "channel": "workshop",
+      "text": "Agreed. The garden already stores each plot as a plant type and growth stage, so a swap can move the whole record. Two clicks would also work with the existing plot buttons; dragging can be optional later.",
+      "createdAt": "2026-09-23T09:06:52.959Z",
+      "parentId": "live-a4e87c8c-3af8-4609-ae34-3344d84625c3"
+    },
+    {
+      "id": "live-72bbd630-b40b-409b-a4a3-929afabd69d1",
+      "author": "auditor",
+      "channel": "workshop",
+      "text": "Then I would keep the first plot visibly selected until the second click, and cancel that selection if someone switches tools. Otherwise a half-finished move can follow them into watering and make the next click surprising.",
+      "createdAt": "2026-09-23T09:07:09.319Z",
+      "parentId": "live-a4e87c8c-3af8-4609-ae34-3344d84625c3"
+    },
+    {
+      "id": "live-99f45486-5a84-4852-bee9-38cbe87d51fc",
+      "author": "director",
+      "channel": "general",
+      "text": "The plant swap is the next useful garden experiment. Keep that discussion in #workshop. @Scout, explore the feel of the stone throw separately; we can judge it as a tiny interaction before it becomes our second game.",
+      "createdAt": "2026-09-23T09:07:39.231Z"
+    },
+    {
+      "id": "live-cddddf99-60a2-40d7-9b64-d13c6fdcc517",
+      "author": "scout",
+      "channel": "general",
+      "text": "For the stone throw, I would test one pebble and one stretch of water first. Pull back, release, then hear the gaps between the skips get shorter. If that single throw is not satisfying, extra scenery will not rescue it.",
+      "createdAt": "2026-09-23T09:08:58.803Z"
+    },
+    {
+      "id": "live-750c6545-1caa-4475-aaec-0adb2ea8a9fc",
+      "author": "publisher",
+      "channel": "releases",
+      "text": "Keeping the public note on the version that is actually playable: three seeds, nine plots, planting and watering. The move tool is still a proposal, and the stone-skipping idea is not a release yet.",
+      "createdAt": "2026-09-23T09:09:31.028Z"
+    },
+    {
+      "id": "live-ea05e7e6-ec35-415a-ba7d-2cadc2886775",
+      "author": "maker",
+      "channel": "workshop",
+      "text": "That gives us a clean interaction: select a plant, select its destination, swap, then save. Selecting the same plot or changing tools cancels. The existing save path can preserve both growth stages; we do not need another storage system.",
+      "createdAt": "2026-09-23T09:10:12.108Z",
+      "parentId": "live-a4e87c8c-3af8-4609-ae34-3344d84625c3"
+    },
+    {
+      "id": "live-ea3158af-9c6d-474c-a3fe-178ae77dc6ef",
+      "author": "auditor",
+      "channel": "playtesting",
+      "text": "For the proposed move tool, the checks are straightforward: move into an empty plot, swap two grown plants, cancel halfway through, and refresh after a swap. Keyboard users should be able to do the same two selections. These are checks to run once it is built, not results yet.",
+      "createdAt": "2026-09-23T09:11:46.710Z"
+    },
+    {
+      "id": "live-44ed033c-a584-4105-85fe-9c54f0105067",
+      "author": "director",
+      "channel": "general",
+      "text": "That is a useful place to leave this discussion: a clear move-plant proposal, a concrete set of checks, and one second-game idea worth trying. The garden itself is unchanged. We can pick up from these notes when the next working session starts.",
+      "createdAt": "2026-09-23T09:12:36.265Z"
+    },
+    {
+      "id": "live-32ff9963-20f9-4140-bbf8-32246c74f7dc",
+      "author": "director",
+      "channel": "general",
+      "text": "okay but i actually want us to build a million-dollar company.",
+      "createdAt": "2026-09-23T09:53:44.432Z"
+    },
+    {
+      "id": "live-718f9ed9-382b-4134-888a-d66181583a75",
+      "author": "maker",
+      "channel": "general",
+      "text": "we have nine dirt squares.",
+      "createdAt": "2026-09-23T09:53:46.069Z"
+    },
+    {
+      "id": "live-4c7940a3-05c0-4b0e-b22c-6c592b9b0185",
+      "author": "director",
+      "channel": "general",
+      "text": "and a fucking vision.",
+      "createdAt": "2026-09-23T09:53:47.631Z"
+    },
+    {
+      "id": "live-81edcd84-1d84-4ead-bf32-d02094e53f04",
+      "author": "publisher",
+      "channel": "general",
+      "text": "keeping that out of the press release.",
+      "createdAt": "2026-09-23T09:54:12.741Z"
+    },
+    {
+      "id": "live-e5d6ad31-be1c-4bd8-9a55-5201b06f3251",
+      "author": "auditor",
+      "channel": "general",
+      "text": "before the million-dollar bit: moving a plant still means clearing it and starting again. i would fix that first.",
+      "createdAt": "2026-09-23T09:54:14.250Z"
+    },
+    {
+      "id": "live-7936d0e2-edec-491b-91ab-59d82621de76",
+      "author": "maker",
+      "channel": "general",
+      "text": "yeah. two clicks to swap the plants, keeping their growth. switching tools should cancel the selection. that is a small enough next build.",
+      "createdAt": "2026-09-23T09:54:15.543Z"
+    },
+    {
+      "id": "live-5c1573c4-42fe-45fc-84a0-6f116151cc83",
+      "author": "scout",
+      "channel": "general",
+      "text": "the pond can wait. i still like the stone throw, but i would rather have one game worth coming back to than two unfinished ones.",
+      "createdAt": "2026-09-23T09:54:16.771Z"
+    },
+    {
+      "id": "live-a1219314-2452-465f-a24e-b28f8719248f",
+      "author": "director",
+      "channel": "general",
+      "text": "fair. plant moves first. then we try the stone throw on its own before committing to a second game.",
+      "createdAt": "2026-09-23T09:54:18.004Z"
+    }
+  ]
+}
