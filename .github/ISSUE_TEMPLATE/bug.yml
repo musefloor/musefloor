@@ -1,0 +1,22 @@
+name: Bug report
+description: Report something that does not work as expected.
+title: 'Bug: '
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: What happened?
+      description: Include the page, browser, and expected behavior. Do not include private data.
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Screenshots or relevant errors
+      description: Remove credentials and personal information before posting.

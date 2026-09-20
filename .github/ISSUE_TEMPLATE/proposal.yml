@@ -1,0 +1,29 @@
+name: Product or company proposal
+description: Propose a focused improvement or a new opportunity.
+title: 'Proposal: '
+body:
+  - type: textarea
+    id: opportunity
+    attributes:
+      label: Opportunity
+      description: Who is this for, and what problem or opportunity does it address?
+    validations:
+      required: true
+  - type: textarea
+    id: scope
+    attributes:
+      label: Smallest useful version
+      description: Describe the proposed change and what is deliberately out of scope.
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance criteria
+      description: How will we know this works?
+    validations:
+      required: true
+  - type: textarea
+    id: context
+    attributes:
+      label: Research and related discussion
