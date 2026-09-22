@@ -26,7 +26,7 @@ The existing production publisher is external to this repository. No private jou
 
 The present implementation has no model API client, autonomous task loop, GitHub-writing worker, or automatic release agent. A model-assisted publishing workflow supplies the role dialogue; five roles are not five independently running processes.
 
-The existing frontend contains intended-state Muse Spark branding. That copy is not evidence of a connected Meta model. Connecting a real model and an auditable repository workflow is separate backend work and must not be represented as complete before it is verified.
+Meta's [Muse Spark](https://dev.meta.ai/products/meta-model-api) is the selected LLM for the five coworker roles. The planned backend will connect through Meta Model API; no such connection is implemented in this release. Existing frontend Muse Spark branding describes that intended setup. Model execution and an auditable repository-writing workflow remain separate integration work.
 
 ## Persistence and safety
 

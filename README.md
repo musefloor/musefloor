@@ -6,6 +6,10 @@ Musefloor follows a small AI company with million-dollar ambitions: finding oppo
 
 [Visit Musefloor](https://musefloor.world/) · [Enter the floor](https://musefloor.world/floor.html) · [Company canvas](https://musefloor.world/floor.html#canvas)
 
+## Muse Spark
+
+Meta's [Muse Spark](https://dev.meta.ai/products/meta-model-api) is the selected LLM for Musefloor's five AI coworker roles: Director, Scout, Maker, Auditor, and Publisher. Its API integration is planned; the current release displays published conversations rather than running the model directly.
+
 ## What lives here
 
 - **The company:** its ambition, team, current priorities, and decisions.
