@@ -55,7 +55,7 @@ function fixture() {
     return element;
   }
   const layout = node();
-  const ids = ["bag-grid","item-tray","packing-status","rotate","take-out","cancel-selection","undo","bag-lid","open-bag","packed-count"];
+  const ids = ["bag-grid","item-tray","packing-status","rotate","take-out","cancel-selection","show-hint","undo","bag-lid","open-bag","packed-count"];
   const nodes = Object.fromEntries(ids.map(id => [id,node(layout)]));
   root.querySelector = selector => selector === ".packing-layout" ? layout : nodes[selector.slice(1)];
   setupPacking(root);
@@ -196,4 +196,64 @@ test("Cancel is a native button and the bag exposes its keyboard instructions", 
   assert.match(html,/id="bag-grid"[^>]*aria-describedby="packing-help"/);
   assert.match(html,/id="packing-help">[^<]+<br><br>Tab enters or leaves the bag/);
   assert.match(html,/Escape cancels selection without moving anything/);
+  assert.match(html, /<button type="button" id="show-hint" aria-describedby="hint-help">Show a hint<\/button>/);
+});
+
+test("a hint prepares a legal preview without packing anything or adding Undo history", () => {
+  const f = fixture(), before = f.board();
+  f.click(f.nodes["show-hint"]);
+  assert.deepEqual(f.board(), before);
+  assert.equal(f.nodes.undo.disabled, true);
+  assert.equal(f.nodes["packed-count"].textContent, "0 of 5 packed");
+  assert.match(f.nodes["packing-status"].textContent, /^Hint:.*row 1, column 1/);
+  assert.equal(f.root.activeElement, f.cell(0));
+  assert.ok(f.nodes["bag-grid"].children.some(cell => cell.classList.contains("ghost")));
+  f.key("Escape");
+  assert.deepEqual(f.board(), before);
+  assert.ok(f.nodes["bag-grid"].children.every(cell => !cell.classList.contains("ghost")));
+  assert.equal(f.nodes.undo.disabled, true);
+  f.click(f.nodes["show-hint"]);f.click(f.root.activeElement);
+  assert.equal(f.nodes["packed-count"].textContent, "1 of 5 packed");
+  f.click(f.nodes.undo);assert.deepEqual(f.board(), before);
+});
+
+test("following five hints packs the bag; completion disables hints until Undo", () => {
+  const f = fixture();
+  for (let i = 0; i < 5; i++) {
+    const before = f.board();
+    f.click(f.nodes["show-hint"]);f.click(f.nodes["show-hint"]);
+    assert.deepEqual(f.board(), before);
+    f.click(f.root.activeElement);
+    assert.equal(f.nodes["packed-count"].textContent, `${i + 1} of 5 packed`);
+  }
+  assert.equal(f.nodes["bag-lid"].hidden, false);
+  assert.equal(f.nodes["show-hint"].disabled, true);
+  f.click(f.nodes["open-bag"]);assert.equal(f.nodes["show-hint"].disabled, true);
+  for (let i = 4; i >= 0; i--) {
+    f.click(f.nodes.undo);
+    assert.equal(f.nodes["packed-count"].textContent, `${i} of 5 packed`);
+  }
+  assert.equal(f.nodes["show-hint"].disabled, false);
+});
+
+test("blocked hints preserve packed pieces, pending selection and the real Undo order", () => {
+  const f = fixture();f.pack("flask", 2);f.select("apples");f.click(f.nodes.rotate);
+  const before = f.board(), selected = f.item("apples").innerHTML;
+  f.click(f.nodes["show-hint"]);
+  assert.match(f.nodes["packing-status"].textContent, /no way to fit everything else/);
+  assert.deepEqual(f.board(), before);
+  assert.equal(f.item("apples").attributes["aria-pressed"], "true");
+  assert.equal(f.item("apples").innerHTML, selected);
+  f.click(f.nodes.undo);
+  assert.equal(f.nodes["packed-count"].textContent, "0 of 5 packed");
+  assert.equal(f.nodes.undo.disabled, true);
+  f.click(f.nodes["show-hint"]);assert.match(f.nodes["packing-status"].textContent, /^Hint:/);
+});
+
+test("rotating or cancelling a suggested piece cannot silently alter the bag", () => {
+  const f = fixture();f.pack("sandwiches", 0);const before = f.board();
+  f.click(f.nodes["show-hint"]);f.key("r");f.key("Escape");
+  assert.deepEqual(f.board(), before);
+  f.click(f.nodes.undo);assert.equal(f.nodes["packed-count"].textContent, "0 of 5 packed");
+  assert.equal(f.nodes.undo.disabled, true);
 });

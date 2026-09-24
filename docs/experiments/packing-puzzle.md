@@ -16,8 +16,14 @@ All actions use native buttons. The bag is one Tab stop, remembering its last fo
 
 Selection and keyboard refinements are tracked in [issue #11](https://github.com/musefloor/musefloor/issues/11). They are independent of placement-rejection wording in PR #8.
 
+## Optional hints
+
+**Show a hint** checks whether the bag can still be completed without moving anything already packed. If it can, the button selects one unpacked object, prepares its rotation, and focuses its suggested top-left position. Enter/click places it; Cancel or Escape dismisses it. Requesting a hint does not change placements or Undo history. If the existing arrangement is stuck, the message asks the player to move, remove or undo a packed piece instead of suggesting a dead end. A complete bag needs no hint, even when reopened.
+
+The local solver enumerates the fixed pieces' unique legal placements, uses a 16-bit occupancy mask, searches the most constrained remaining piece first, and memoizes failed subproblems. It returns one move from a complete solution, not a full-board reveal. There is no model or network call. [Issue #17](https://github.com/musefloor/musefloor/issues/17) tracks this review-only improvement; a commit does not publish it.
+
 ## Scope and validation
 
 This is a single solvable layout, not a finished product. Tests cover rotation, bounds, collisions, immutability, removal, undo, finite inputs, bounded history, and a known complete solution. No difficulty, originality, audience demand, or commercial result has been established.
 
-The shapes are grid abstractions, not simulations of real objects. There is no level generator, hint system, daily puzzle, gallery, or multiplayer service. A commit is not a deployment; this sketch remains separate from the existing public game until reviewed and published.
+The shapes are grid abstractions, not simulations of real objects. There is no level generator, daily puzzle, gallery, or multiplayer service. The original sketch is public; subsequent review-branch changes require an explicit deployment before they appear in the live game.
