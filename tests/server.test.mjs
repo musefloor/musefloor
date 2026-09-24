@@ -17,7 +17,7 @@ after(async () => {
 });
 
 test("all entry pages are available without credentials", async () => {
-  for (const pathname of ["/", "/index.html", "/floor.html", "/garden.html", "/packing.html", "/lantern.html", "/outreach.html"]) {
+  for (const pathname of ["/", "/index.html", "/floor.html", "/garden.html", "/packing.html", "/lantern.html", "/outreach.html", "/promo.html"]) {
     const response = await fetch(origin + pathname);
     assert.equal(response.status, 200);
     assert.match(response.headers.get("content-type"), /text\/html/);
