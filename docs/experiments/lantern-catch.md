@@ -6,7 +6,9 @@
 
 Run `npm run dev` and open `/lantern.html`, or follow **Lantern Catch** from the floor's company canvas. Catch 12 fireflies in 32 seconds. Three falling leaves end the round; missed fireflies do not cost a life. The jar catches an object only when it reaches the mouth of the jar in the selected lane.
 
-Use Left/Right or A/D, press 1–5, or use the native numbered and directional buttons. Pause with P, Escape, or Pause. A hidden tab, window blur, page exit, or frame interruption longer than 250ms pauses the round. Returning never resumes it automatically. Resume preserves the clock, jar, score and falling objects. Replay starts a fresh seeded schedule, not a continuation of the last round. There is no mid-round reset button to press accidentally.
+Use Left/Right or A/D, press 1–5, or use the native numbered and directional buttons. Pause with P, Escape, or Pause. A hidden tab, window blur, page exit, or frame interruption longer than 250ms pauses the round. Returning never resumes it automatically. Resume preserves the clock, jar, score and falling objects.
+
+After any ending, **Retry this round** keeps the exact immutable drop schedule and resets the timer, jar position, score, leaves and last-catch feedback. **New round** creates a fresh seeded schedule. Neither restarts automatically or is offered mid-round or while paused. This practice option is tracked in [issue #15](https://github.com/musefloor/musefloor/issues/15). No round is saved across a page refresh.
 
 ## Implementation
 

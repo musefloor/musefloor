@@ -1,4 +1,4 @@
-import { rules, newRound, startRound, pauseRound, resumeRound, moveJar, advanceRound, visibleDrops } from "./lantern-model.js";
+import { rules, newRound, retryRound, startRound, pauseRound, resumeRound, moveJar, advanceRound, visibleDrops } from "./lantern-model.js";
 
 export function setupLantern(root, view = root.defaultView) {
   const get = id => root.querySelector(`#${id}`);
@@ -6,6 +6,7 @@ export function setupLantern(root, view = root.defaultView) {
   const overlay = get("game-overlay"), title = get("overlay-title"), copy = get("overlay-copy"), action = get("round-action");
   const lights = get("light-count"), leaves = get("leaf-count"), clock = get("time-left"), status = get("game-status");
   const pause = get("pause-round"), left = get("move-left"), right = get("move-right");
+  const retry = get("retry-round"), replayHelp = get("replay-help");
   const lanes = [...game.querySelectorAll("[data-lane]")];
   let state = newRound(), frame = null, lastFrame = null, roundNumber = 0, lastAnnouncement = null;
 
@@ -27,6 +28,8 @@ export function setupLantern(root, view = root.defaultView) {
     pause.disabled = !["running", "paused"].includes(state.status);
     pause.textContent = state.status === "paused" ? "Resume" : "Pause";
     action.disabled = false;
+    retry.hidden = retry.disabled = replayHelp.hidden = state.status !== "finished";
+    action.setAttribute("aria-describedby", state.status === "finished" ? "replay-help" : "game-help");
     overlay.hidden = running;
     if (state.lastEvent && state.lastEvent.id !== lastAnnouncement) {
       lastAnnouncement = state.lastEvent.id;
@@ -39,7 +42,7 @@ export function setupLantern(root, view = root.defaultView) {
     } else if (state.status === "finished") {
       title.textContent = state.outcome === "won" ? "A jarful of evening." : state.outcome === "leaves" ? "More leaves than light." : "The evening slipped by.";
       copy.textContent = state.outcome === "won" ? `All ${rules.target} lights, with ${Math.ceil(rules.duration - state.elapsed)} seconds to spare. Nicely caught.` : `${state.caught} of ${rules.target} lights caught. Try another round when you're ready.`;
-      action.textContent = "Catch another evening";
+      action.textContent = "New round";
       status.textContent = `${title.textContent} ${state.caught} of ${rules.target} lights caught.`;
     }
   }
@@ -70,11 +73,11 @@ export function setupLantern(root, view = root.defaultView) {
     else { stopFrames(); action.focus(); }
   }
 
-  function play() {
-    if (state.status === "running") return;
+  function play(samePattern = false) {
+    if (state.status === "running" || (samePattern && state.status !== "finished")) return;
     stopFrames();
     if (state.status === "paused") state = resumeRound(state);
-    else { state = startRound(newRound(((Date.now() >>> 0) + roundNumber++) >>> 0)); lastAnnouncement = null; }
+    else { state = startRound(samePattern ? retryRound(state) : newRound(((Date.now() >>> 0) + roundNumber++) >>> 0)); lastAnnouncement = null; }
     status.textContent = "Catch the glowing fireflies. Leave the leaves alone.";
     render(); game.scrollIntoView({ block: "start" }); field.focus({ preventScroll: true });
     if (root.hidden) pauseGame("Paused while this tab is hidden.", false);
@@ -82,7 +85,8 @@ export function setupLantern(root, view = root.defaultView) {
   }
 
   function move(lane) { state = moveJar(state, lane); render(); }
-  action.addEventListener("click", play);
+  action.addEventListener("click", () => play());
+  retry.addEventListener("click", () => play(true));
   pause.addEventListener("click", () => state.status === "paused" ? play() : pauseGame());
   left.addEventListener("click", () => move(state.lane - 1));
   right.addEventListener("click", () => move(state.lane + 1));
