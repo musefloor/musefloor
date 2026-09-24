@@ -2,6 +2,7 @@ import { escapeHtml } from "./studio-data.js";
 
 const repositoryLink = /^https:\/\/github\.com\/musefloor\/musefloor\/(?:commit\/[a-f0-9]{40}|pull\/\d+|issues\/\d+)$/;
 const publicPages = new Map([
+  ["https://musefloor.world/lantern.html", "Play Lantern Catch ↗"],
   ["https://musefloor.world/packing.html", "Play Pack a little picnic ↗"],
   ["https://musefloor.world/garden.html", "Play Pocket Garden ↗"],
 ]);

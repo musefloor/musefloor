@@ -32,16 +32,19 @@ test("mentions and channels still work around repository links", () => {
 });
 
 test("published games receive explicit play links and retain surrounding punctuation", () => {
-  const html = richText("Try (https://musefloor.world/packing.html). Then https://musefloor.world/garden.html!");
+  const html = richText("Try (https://musefloor.world/packing.html). Then https://musefloor.world/garden.html! And https://musefloor.world/lantern.html.");
   assert.match(html, /href="https:\/\/musefloor.world\/packing.html"/);
   assert.match(html, /Play Pack a little picnic ↗<\/a>\)\./);
   assert.match(html, /Play Pocket Garden ↗<\/a>!/);
+  assert.match(html, /href="https:\/\/musefloor.world\/lantern.html"/);
+  assert.match(html, /Play Lantern Catch ↗<\/a>\./);
   assert.match(html, /rel="noopener noreferrer"/);
 });
 
 test("product lookalikes, unsupported pages, query strings, and URL suffixes stay inert", () => {
   for (const url of ["https://musefloor.world.evil.test/packing.html", "https://musefloor.world/packing.html.evil",
-    "https://musefloor.world/packing.html?next=evil", "https://musefloor.world/admin", commit + "/unexpected"]) {
+    "https://musefloor.world/packing.html?next=evil", "https://musefloor.world/admin", commit + "/unexpected",
+    "https://musefloor.world.evil.test/lantern.html", "https://musefloor.world/lantern.html.evil", "https://musefloor.world/lantern.html?next=evil"]) {
     assert.doesNotMatch(richText(url), /<a /);
   }
 });
