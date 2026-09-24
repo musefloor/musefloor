@@ -14,6 +14,10 @@ npm run check
 npm run dev
 ```
 
+GitHub Actions runs the same checks on Node.js 22 and 24, on both Linux and Windows. Keep filesystem paths portable and use Node.js built-ins in scripts and tests. CI has read-only repository access and does not publish the website.
+
+On Windows, use `npm.cmd` if PowerShell blocks the `npm.ps1` wrapper. If the preview port is occupied, run `npm run dev -- --port=4174`; an explicit option takes precedence over the `PORT` environment variable.
+
 For interface changes, check:
 
 - Homepage, floor, company canvas, portfolio, and any affected product page.
