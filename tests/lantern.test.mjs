@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
-import { rules, makeDrops, newRound, startRound, pauseRound, resumeRound, moveJar, advanceRound, visibleDrops } from "../public/lantern-model.js";
+import { rules, makeDrops, newRound, retryRound, startRound, pauseRound, resumeRound, moveJar, advanceRound, visibleDrops } from "../public/lantern-model.js";
 import { setupLantern } from "../public/lantern.js";
 
 function until(state, time) {
@@ -122,6 +122,35 @@ test("visible drops exist only between spawn and arrival, with bounded progress"
   assert.ok(!visibleDrops({...base,elapsed:first.arrival}).some(drop=>drop.id===0));
 });
 
+test("retry preserves the exact schedule after every ending and resets all transient state", () => {
+  for (const outcome of ["won", "leaves", "time"]) {
+    for (const seed of [0, 7, 42, 0xffffffff]) {
+      let state = startRound(newRound(seed));
+      for (const drop of state.drops) {
+        const catchDrop = outcome === "won" ? drop.kind === "light" : outcome === "leaves" && drop.kind === "leaf";
+        state = moveJar(state, catchDrop ? drop.lane : (drop.lane + 1) % rules.lanes);
+        state = until(state, drop.arrival + 0.001);
+        if (state.status === "finished") break;
+      }
+      state = until(state, rules.duration);
+      assert.equal(state.outcome, outcome);
+      const before = JSON.stringify(state), retry = retryRound(state);
+      assert.deepEqual(retry, newRound(seed));
+      assert.strictEqual(retry.drops, state.drops);
+      assert.ok(Object.isFrozen(retry.drops));
+      assert.equal(JSON.stringify(state), before);
+      assert.notStrictEqual(retry, state);
+      const running = startRound(retry), first = running.drops[0];
+      assert.equal(until(moveJar(running, first.lane), first.arrival + 0.001).caught, 1);
+    }
+  }
+});
+
+test("retry cannot reset a ready, running or paused round", () => {
+  const ready = newRound(42), running = until(startRound(ready), 5);
+  for (const state of [ready, running, pauseRound(running)]) assert.strictEqual(retryRound(state), state);
+});
+
 function controllerFixture() {
   const root={hidden:false,activeElement:null,listeners:new Map(),addEventListener(type,fn){this.listeners.set(type,fn);}};
   function element() {
@@ -130,7 +159,7 @@ function controllerFixture() {
       addEventListener(type,fn){this.listeners.set(type,fn);},
       setAttribute(key,value){this.attributes[key]=value;},focus(){root.activeElement=this;},scrollIntoView(options){this.scrolled=options;} };
   }
-  const ids=["catch-game","playfield","falling-items","catch-jar","game-overlay","overlay-title","overlay-copy","round-action","light-count","leaf-count","time-left","game-status","pause-round","move-left","move-right"];
+  const ids=["catch-game","playfield","falling-items","catch-jar","game-overlay","overlay-title","overlay-copy","round-action","retry-round","replay-help","light-count","leaf-count","time-left","game-status","pause-round","move-left","move-right"];
   const nodes=Object.fromEntries(ids.map(id=>[id,element()]));
   const lanes=Array.from({length:5},(_,index)=>({...element(),dataset:{lane:String(index)}}));
   nodes["catch-game"].querySelectorAll=()=>lanes;
@@ -193,12 +222,58 @@ test("the controller reaches an ending, stops frames, then resets on explicit re
   const f=controllerFixture();f.click(f.nodes["round-action"]);
   for(let time=0;time<=34000 && f.frames.size;time+=50)f.frame(time);
   assert.equal(f.frames.size,0);assert.equal(f.nodes["game-overlay"].hidden,false);
-  assert.equal(f.nodes["round-action"].textContent,"Catch another evening");
+  assert.equal(f.nodes["round-action"].textContent,"New round");
   assert.equal(f.root.activeElement,f.nodes["round-action"]);
   f.click(f.nodes["round-action"]);
   assert.equal(f.frames.size,1);assert.equal(f.nodes["light-count"].innerHTML,"0 <small>/ 12</small>");
   assert.equal(f.nodes["leaf-count"].innerHTML,"0 <small>/ 3</small>");
   assert.equal(f.nodes["time-left"].innerHTML,"32<small>s</small>");
+});
+
+test("controller retry repeats the pattern and outcome; New round changes the pattern", t => {
+  t.mock.method(Date, "now", () => 42);
+  const f = controllerFixture();
+  function playToEnd(button) {
+    f.click(button);
+    assert.equal(f.nodes["light-count"].innerHTML, "0 <small>/ 12</small>");
+    assert.equal(f.nodes["leaf-count"].innerHTML, "0 <small>/ 3</small>");
+    assert.equal(f.nodes["time-left"].innerHTML, "32<small>s</small>");
+    assert.equal(f.lanes[2].attributes["aria-pressed"], "true");
+    assert.equal(f.nodes["retry-round"].hidden, true);
+    assert.equal(f.nodes["replay-help"].hidden, true);
+    assert.equal(f.root.activeElement, f.nodes.playfield);
+    const trace = [];
+    for (let time = 0; time <= 34000 && f.frames.size; time += 50) {
+      f.frame(time);
+      if (time % 500 === 0) trace.push(f.nodes["falling-items"].innerHTML);
+    }
+    assert.equal(f.frames.size, 0);
+    assert.equal(f.nodes["retry-round"].hidden, false);
+    assert.equal(f.nodes["retry-round"].disabled, false);
+    assert.equal(f.nodes["replay-help"].hidden, false);
+    assert.equal(f.nodes["round-action"].attributes["aria-describedby"], "replay-help");
+    return { trace, score: f.nodes["light-count"].innerHTML, leaves: f.nodes["leaf-count"].innerHTML, clock: f.nodes["time-left"].innerHTML };
+  }
+  const original = playToEnd(f.nodes["round-action"]);
+  assert.deepEqual(playToEnd(f.nodes["retry-round"]), original);
+  assert.deepEqual(playToEnd(f.nodes["retry-round"]), original);
+  assert.notDeepEqual(playToEnd(f.nodes["round-action"]).trace, original.trace);
+});
+
+test("retry ignores stale or repeated events and preserves pause/resume", () => {
+  const f = controllerFixture(), retry = f.nodes["retry-round"];
+  const staleClick = () => retry.listeners.get("click")();
+  assert.equal(retry.hidden, true);assert.equal(retry.disabled, true);
+  staleClick();assert.equal(f.frames.size, 0);
+  f.click(f.nodes["round-action"]);
+  for (let time = 0; time <= 34000 && f.frames.size; time += 50) f.frame(time);
+  f.click(retry);staleClick();staleClick();
+  assert.equal(f.frames.size, 1);
+  f.frame(0);f.frame(100);f.key("p");
+  const clock = f.nodes["time-left"].innerHTML;
+  staleClick();assert.equal(f.frames.size, 0);assert.equal(retry.hidden, true);
+  f.click(f.nodes["round-action"]);f.frame(50000);
+  assert.equal(f.frames.size, 1);assert.equal(f.nodes["time-left"].innerHTML, clock);
 });
 
 test("the new game has labelled native controls, reduced decoration and no external services", () => {
@@ -207,6 +282,9 @@ test("the new game has labelled native controls, reduced decoration and no exter
   assert.equal((html.match(/data-lane="[0-4]"/g)||[]).length,5);
   assert.match(html,/aria-describedby="game-help"/);assert.match(html,/role="status" aria-live="polite"/);
   assert.match(html,/visual timing game/i);assert.match(css,/prefers-reduced-motion:reduce/);
+  assert.match(html, /id="retry-round" type="button" aria-describedby="replay-help" hidden disabled/);
+  assert.match(html, /Retry this round keeps the same pattern/);
+  assert.match(css, /\.playfield:has\(#retry-round:not\(\[hidden\]\)\)\{min-height:330px\}/);
   assert.match(css,/\.scoreboard\{position:sticky;top:12px/);
   assert.doesNotMatch(js,/fetch\(|localStorage|sessionStorage|setInterval|setTimeout/);
   assert.match(read("floor.html"),/href="lantern.html">Play the sketch/);

@@ -9,8 +9,16 @@ export function makeDrops(seed = 1) {
   }));
 }
 
+function readyRound(drops) {
+  return { status: "ready", outcome: null, elapsed: 0, lane: 2, caught: 0, leaves: 0, lastEvent: null, drops };
+}
+
 export function newRound(seed = 1) {
-  return { status: "ready", outcome: null, elapsed: 0, lane: 2, caught: 0, leaves: 0, lastEvent: null, drops: makeDrops(seed) };
+  return readyRound(makeDrops(seed));
+}
+
+export function retryRound(state) {
+  return state.status === "finished" ? readyRound(state.drops) : state;
 }
 
 export function startRound(state) {

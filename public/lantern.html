@@ -33,10 +33,21 @@
             <div class="lane-guides" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
             <div id="falling-items" aria-hidden="true"></div>
             <div id="catch-jar" class="catch-jar" aria-hidden="true"><span class="jar-rim"></span><span class="jar-light"></span><span class="jar-face">· ·</span><span class="jar-base"></span></div>
-            <div class="game-overlay" id="game-overlay"><div class="overlay-note"><span class="note-star" aria-hidden="true">✦</span><h2 id="overlay-title">Catch a little evening.</h2><p id="overlay-copy">Catch 12 fireflies in 32 seconds. Three leaves in the jar end the round.</p><button id="round-action" type="button" disabled>Start catching</button></div></div>
+            <div class="game-overlay" id="game-overlay">
+              <div class="overlay-note">
+                <span class="note-star" aria-hidden="true">✦</span>
+                <h2 id="overlay-title">Catch a little evening.</h2>
+                <p id="overlay-copy">Catch 12 fireflies in 32 seconds. Three leaves in the jar end the round.</p>
+                <div class="round-actions">
+                  <button id="round-action" type="button" disabled>Start catching</button>
+                  <button id="retry-round" type="button" aria-describedby="replay-help" hidden disabled>Retry this round</button>
+                </div>
+              </div>
+            </div>
           </div>
           <div class="lane-controls" role="group" aria-label="Choose a jar lane"><button type="button" data-lane="0" aria-label="Move jar to lane 1" aria-pressed="false" disabled>1</button><button type="button" data-lane="1" aria-label="Move jar to lane 2" aria-pressed="false" disabled>2</button><button type="button" data-lane="2" aria-label="Move jar to lane 3" aria-pressed="true" disabled>3</button><button type="button" data-lane="3" aria-label="Move jar to lane 4" aria-pressed="false" disabled>4</button><button type="button" data-lane="4" aria-label="Move jar to lane 5" aria-pressed="false" disabled>5</button></div>
           <div class="game-toolbar"><div class="move-controls"><button id="move-left" type="button" aria-label="Move jar left" disabled>← Left</button><button id="move-right" type="button" aria-label="Move jar right" disabled>Right →</button></div><p id="game-status" role="status" aria-live="polite">Ready when you are.</p></div>
+          <p id="replay-help" hidden>Retry this round keeps the same pattern with a fresh clock and empty jar. New round changes the pattern.</p>
           <div class="game-explainer"><p id="game-help">Move with ← → or A / D, or choose a lane with 1–5 or the buttons. P or Escape pauses. The round also pauses if you leave the window; resume when you’re ready.</p><div class="legend"><span><i class="legend-light" aria-hidden="true"></i>Firefly · catch</span><span><i class="legend-leaf" aria-hidden="true"></i>Leaf · avoid</span></div></div>
           <p class="access-note">A visual timing game. You can play without a mouse; reduced-motion settings remove decorative transitions, but falling objects are part of the game.</p>
         </section>
