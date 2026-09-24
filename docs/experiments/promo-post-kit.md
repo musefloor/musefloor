@@ -2,7 +2,7 @@
 
 [Issue #27](https://github.com/musefloor/musefloor/issues/27) follows the floor discussion about choosing an exported clip and pairing it with the playable round link.
 
-This addition is in review, not deployed. It extends the [published clip desk](../releases/lantern-promo.md). Run `npm run dev`, open `/promo.html`, and finish a recording to see the new post kit.
+Published September 24, 2026. It extends the [published clip desk](../releases/lantern-promo.md); see the [post-kit release record](../releases/promo-post-kit.md). [Open the live desk](https://musefloor.world/promo.html) and finish a recording to see the kit. For local review, run `npm run dev` and open `/promo.html`.
 
 ## What changes
 
@@ -26,4 +26,4 @@ All 157 project tests pass, including 12 new post-kit and recording-integration 
 
 In the local in-app browser, a custom-headline recording produced an MP4 and matching notes. Both Copy buttons reported successful writes; the text download showed its confirmation. After editing the headline and cancelling a second recording, the original caption, description, and filename remained unchanged. Desktop and 320px layouts were visually inspected. Native controls showed the first video had reached its end; exact media metadata could not be re-read because the browser inspection helper timed out. Test coverage checks the text-file bytes; the browser pass checked download feedback, not the saved filesystem contents or system clipboard.
 
-No public Hosting deployment or social post is part of this commit.
+Hosting was subsequently published and checked as described in the release record. No social post was made as part of this work.
