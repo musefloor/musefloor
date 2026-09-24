@@ -27,7 +27,14 @@
           </section>
           <figure class="clip-preview"><figcaption><span>Lantern Catch</span><span>Promo preview</span></figcaption><canvas id="promo-canvas" width="720" height="900" role="img" aria-label="Lantern Catch promo: a jar catches fireflies in a dusk scene, followed by an invitation to play.">A scripted Lantern Catch demo. Catch glowing fireflies, avoid leaves, then try the linked round.</canvas></figure>
         </div>
-        <section id="clip-result" class="clip-result" aria-labelledby="result-title" hidden><div><p class="section-number">02 / Your take</p><h2 id="result-title">Give it a watch.</h2><p id="result-info"></p><a id="download-clip" class="download-clip" download>Download clip ↓</a><p class="clip-note">Preview the actual file before sharing. Video-format support varies between social platforms.</p></div><video id="recorded-video" controls playsinline preload="metadata" aria-label="Recorded promo playback"></video></section>
+        <section id="clip-result" class="clip-result" aria-labelledby="result-title" hidden>
+          <div><p class="section-number">02 / Your take</p><h2 id="result-title">Give it a watch.</h2><p id="result-info"></p><a id="download-clip" class="download-clip" download>Download clip ↓</a><p class="clip-note">Preview the actual file before sharing. Video-format support varies between social platforms.</p></div>
+          <video id="recorded-video" controls playsinline preload="metadata" aria-label="Recorded promo playback"></video>
+          <div class="post-kit" aria-labelledby="post-title">
+            <div><p class="section-number">03 / Take it with you</p><h2 id="post-title">The words to go with it.</h2><p class="clip-note">A starting caption and visual description for this recorded take. Copy and edit them wherever you share the video. Nothing is posted from here.</p><button id="download-post-notes" type="button" disabled>Download post notes ↓</button><p id="post-filename" class="clip-note"></p><p id="post-status" class="status-line" role="status"></p></div>
+            <div class="post-fields"><label for="post-caption">Caption + playable link</label><textarea id="post-caption" readonly rows="6"></textarea><button id="copy-caption" type="button" disabled>Copy caption</button><label for="post-description">Visual description</label><textarea id="post-description" readonly rows="5"></textarea><button id="copy-description" type="button" disabled>Copy description</button><p class="clip-note">If copying is unavailable, select the text and copy it manually. Text length limits vary by platform.</p></div>
+          </div>
+        </section>
         <noscript><p>This tool needs JavaScript. You can still <a href="lantern.html">open Lantern Catch</a>.</p></noscript>
       </main>
       <footer class="desk-footer"><span>One clear invitation.</span><a href="https://github.com/musefloor/musefloor/issues/25" target="_blank" rel="noopener noreferrer">About this work ↗</a></footer>

@@ -1,6 +1,7 @@
 import { promo, cleanHeadline, makePromoFrames, frameAt, recordingFormat } from "./promo-model.js";
 import { drawPromo } from "./promo-render.js";
 import { openDesk } from "./outreach-model.js";
+import { makePostKit, setupPostKit } from "./promo-post.js";
 
 export async function setupPromo(root, view = root.defaultView, services = {}) {
   const get = id => root.querySelector("#" + id), canvas = get("promo-canvas");
@@ -9,11 +10,13 @@ export async function setupPromo(root, view = root.defaultView, services = {}) {
   const paint = services.draw || drawPromo, frames = makePromoFrames();
   const format = recordingFormat(view.MediaRecorder, canvas);
   const desk = openDesk(services.storage || (() => view.localStorage));
+  const postKit = setupPostKit(root, view);
+  const takePrefix = view.crypto?.randomUUID?.().slice(0, 8) || Date.now().toString(36);
   get("clip-headline").value = cleanHeadline(desk.state.drafts.lantern.headline);
   let ready = false, session = null, raf = null, deadline = null, resultUrl = null, stillBusy = false, stillRevision = 0;
   let current = frameAt(frames, 5), takeNumber = 0;
   const announce = text => { get("clip-status").textContent = text; };
-  const render = () => paint(ctx, current, cleanHeadline(get("clip-headline").value));
+  const render = () => paint(ctx, current, session?.headline || cleanHeadline(get("clip-headline").value));
   const controls = () => {
     get("clip-headline").disabled = !ready || !!session || stillBusy;
     get("preview-clip").disabled = !ready || !!session || stillBusy;
@@ -53,7 +56,7 @@ export async function setupPromo(root, view = root.defaultView, services = {}) {
   }
   function start(record) {
     if (!ready || session || stillBusy || root.hidden || (record && !format)) return;
-    const take = { number: ++takeNumber, start: null, last: null, discard: false, finishing: false, stream: null, recorder: null, chunks: [] };
+    const take = { number: ++takeNumber, headline: cleanHeadline(get("clip-headline").value), start: null, last: null, discard: false, finishing: false, stream: null, recorder: null, chunks: [] };
     session = take; current = frameAt(frames, 0); render(); get("clip-progress").value = 0;
     try {
       if (record) {
@@ -69,13 +72,15 @@ export async function setupPromo(root, view = root.defaultView, services = {}) {
           const blob = new view.Blob(take.chunks, { type: take.recorder.mimeType || format.mime });
           if (!blob.size) { controls(); announce("The recording was empty. Try again, or save a still image."); return; }
           try {
+            const notes = makePostKit(take.headline, `${takePrefix}-${take.number}`, format.extension);
             const url = view.URL.createObjectURL(blob);
             get("recorded-video").pause();
             if (resultUrl) view.URL.revokeObjectURL(resultUrl);
             resultUrl = url;
             get("recorded-video").src = resultUrl;
             get("download-clip").href = resultUrl;
-            get("download-clip").download = `musefloor-lantern-promo.${format.extension}`;
+            get("download-clip").download = `${notes.basename}.${format.extension}`;
+            postKit.show(notes);
             get("clip-result").hidden = false;
             get("result-info").textContent = `${format.extension.toUpperCase()} · 720 × 900 · silent · ${(blob.size / 1024 / 1024).toFixed(2)} MB. This take uses the headline shown when recording started.`;
             announce("Clip ready. Watch the recorded file below, then download it.");
@@ -113,7 +118,7 @@ export async function setupPromo(root, view = root.defaultView, services = {}) {
   });
   root.addEventListener("visibilitychange", () => { if (root.hidden) cancel("Interrupted by leaving the tab. Start a new take when you return; incomplete recordings are discarded."); });
   view.addEventListener("pagehide", () => {
-    cancel("Stopped after leaving the page."); stillRevision++; stillBusy = false; controls();
+    cancel("Stopped after leaving the page."); stillRevision++; stillBusy = false; controls(); postKit.clear();
     get("recorded-video").pause();
     if (resultUrl) view.URL.revokeObjectURL(resultUrl);
     resultUrl = null; get("recorded-video").removeAttribute("src");get("download-clip").removeAttribute("href");get("clip-result").hidden = true;
