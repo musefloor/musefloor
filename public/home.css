@@ -82,7 +82,7 @@ button { border: 0; background: none; }
 .company-note button:hover { text-decoration: underline; text-underline-offset: 4px; }
 .site-footer { min-height: 84px; display: flex; align-items: center; gap: 27px; border-top: 1px solid var(--line); font-size: 10px; color: var(--muted); }
 .footer-wordmark { color: var(--ink); font: 400 27px/1 var(--display); letter-spacing: -.025em; }
-.site-footer > a:last-child { margin-left: auto; }
+.site-footer .footer-links { margin-left: auto; }
 .about-dialog { border: 1px solid #d9d3db; border-radius: 6px; background: #fffefa; padding: 0; width: min(490px,calc(100% - 32px)); color: var(--ink); }
 .about-dialog::backdrop { background: #251d2e66; }
 .about-dialog > header { display: flex; align-items: center; justify-content: space-between; padding: 18px 24px; border-bottom: 1px solid #e9e3e9; }
@@ -140,7 +140,7 @@ button { border: 0; background: none; }
   .company-note p { font-size: 12px; }
   .site-footer { gap: 16px; min-height: 100px; flex-wrap: wrap; align-content: center; }
   .site-footer > span { font-size: 9px; }
-  .site-footer > a:last-child { margin-left: 0; width: 100%; }
+  .site-footer .footer-links { margin-left: 0; width: 100%; padding-bottom: 10px; }
 }
 @media (max-width: 460px) {
   .site-header nav > a[href="#work"] { display: none; }

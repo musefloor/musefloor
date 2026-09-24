@@ -6,6 +6,11 @@
 .rail-mark { padding: 0; background: transparent; overflow: hidden; }
 .rail-mark .brand-logo { width: 100%; height: 100%; border-radius: inherit; }
 .studio-attachment .brand-logo { width: 64px; height: 64px; }
+.company-links { display: flex; align-items: center; flex-wrap: wrap; gap: 8px 20px; }
+.company-links a { display: inline-flex; align-items: center; min-height: 28px; white-space: nowrap; }
+.company-links a:hover { text-decoration: underline; text-underline-offset: 4px; }
+.sidebar-links { margin: 0 18px 12px; color: #d4c4dd; font-size: 11px; }
+.sidebar-links a:hover { color: #fff; }
 @media (max-width: 620px) {
   .home-link .brand-logo, .game-nav .brand .brand-logo { width: 32px; height: 32px; }
 }
