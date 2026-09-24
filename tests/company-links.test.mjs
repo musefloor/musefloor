@@ -22,3 +22,13 @@ for (const page of ["index.html", "floor.html", "garden.html"]) {
     }
   });
 }
+
+test("homepage exposes both social links in its top navigation", () => {
+  const html = readFileSync(new URL("../public/index.html", import.meta.url), "utf8");
+  const header = html.match(/<header class="site-header">[\s\S]*?<\/header>/)?.[0];
+  assert.ok(header, "Homepage has a site header");
+  assert.match(header, /<nav class="header-socials" aria-label="Musefloor social links">/);
+  for (const url of ["https://x.com/musefloor", "https://github.com/musefloor/musefloor"]) {
+    assert.ok(header.includes(`href="${url}" target="_blank" rel="noopener noreferrer"`));
+  }
+});
