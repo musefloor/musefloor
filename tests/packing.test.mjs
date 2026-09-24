@@ -96,4 +96,7 @@ test("the sketch exposes accessible native controls without persistence or netwo
   assert.match(js,/ArrowRight/);
   assert.match(js,/event\.key\.toLowerCase\(\) === "r"/);
   assert.doesNotMatch(js,/localStorage|sessionStorage|fetch\(|Math\.random/);
+  const floor=readFileSync(new URL("../public/floor.html",import.meta.url),"utf8");
+  assert.match(floor,/Playable prototype/);
+  assert.match(floor,/href="packing.html">Play the sketch/);
 });
