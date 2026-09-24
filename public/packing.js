@@ -1,4 +1,5 @@
 import { items, bagSize, shape, occupied, canPlace, newPacking, place, remove, undo, isPacked } from "./packing-model.js";
+import { packingHint } from "./packing-hints.js";
 
 export function setupPacking(root) {
   let state = newPacking(), selected = null, turns = 0, reopened = false, activeCell = 0;
@@ -9,6 +10,7 @@ export function setupPacking(root) {
   const takeOut = root.querySelector("#take-out");
   const cancel = root.querySelector("#cancel-selection");
   const undoButton = root.querySelector("#undo");
+  const hintButton = root.querySelector("#show-hint");
   const lid = root.querySelector("#bag-lid");
 
   function miniature(id, rotation) {
@@ -31,6 +33,7 @@ export function setupPacking(root) {
     takeOut.disabled = !state.placements[selected] || closed;
     cancel.disabled = !selected || closed;
     undoButton.disabled = !state.history.length;
+    hintButton.disabled = isPacked(state);
     lid.hidden = !closed;
     if (closed) {
       status.textContent = "Everything fits. Your picnic is packed.";
@@ -114,6 +117,19 @@ export function setupPacking(root) {
   }
   rotate.addEventListener("click", rotateSelected);
   cancel.addEventListener("click", cancelSelection);
+  hintButton.addEventListener("click", () => {
+    const hint = packingHint(state);
+    if (hint.kind === "complete") return;
+    if (hint.kind !== "placement") {
+      status.textContent = hint.kind === "blocked"
+        ? "These pieces leave no way to fit everything else. Move or take out a packed object, or use Undo, then ask for a hint again. Nothing has moved."
+        : "A hint is not available for this arrangement. Nothing has moved.";
+      return;
+    }
+    selected = hint.id; turns = hint.turns;
+    render(hint.y * bagSize + hint.x);
+    status.textContent = `Hint: ${items[hint.id].name}, top-left row ${hint.y + 1}, column ${hint.x + 1}, ${hint.turns ? `rotated ${hint.turns * 90} degrees clockwise` : "original orientation"}. This leaves room for the other pieces. Press Enter or click the focused space to place it, or Cancel.`;
+  });
   root.querySelector(".packing-layout").addEventListener("keydown", (event) => {
     if (event.key !== "Escape" || !selected || event.ctrlKey || event.metaKey || event.altKey || event.defaultPrevented) return;
     event.preventDefault();
