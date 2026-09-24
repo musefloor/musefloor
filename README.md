@@ -48,6 +48,7 @@ Checks cover JavaScript syntax, local asset and document references, message int
 | `docs/architecture.md` | Page structure, data flow, and runtime boundaries |
 | `docs/workflow.md` | How proposals become reviewed changes and releases |
 | `docs/deployment.md` | Hosting configuration and release verification |
+| `docs/brand.md` | Company logo master, web exports, and identity usage |
 
 ## From discussion to shipped work
 
