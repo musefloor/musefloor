@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
-import { bagSize, items, shape, occupied, canPlace, newPacking, place, remove, undo, isPacked } from "../public/packing-model.js";
+import { bagSize, items, shape, occupied, canPlace, placementIssue, newPacking, place, remove, undo, isPacked } from "../public/packing-model.js";
 
 const solution = [["sandwiches",0,0,0],["flask",3,0,0],["blanket",1,0,0],["utensils",0,2,0],["apples",2,3,0]];
 
@@ -52,6 +52,55 @@ test("repositioning ignores only the moving object's old cells", () => {
   assert.deepEqual(moved.placements.sandwiches,{x:1,y:0,turns:0});
   assert.equal(occupied(moved.placements).size,4);
   assert.strictEqual(place(moved,"sandwiches",1,0),moved);
+});
+
+test("placement issues distinguish invalid input, bag edges, and overlap", () => {
+  const state=place(newPacking(),"sandwiches",0,0);
+  assert.deepEqual(placementIssue(state.placements,"apples",0,0),{reason:"overlap",blockers:["sandwiches"]});
+  assert.deepEqual(placementIssue(state.placements,"flask",3,3),{reason:"outside"});
+  assert.deepEqual(placementIssue(state.placements,"apples",-1,0),{reason:"outside"});
+  assert.deepEqual(placementIssue(state.placements,"flask",0,0,1),{reason:"overlap",blockers:["sandwiches"]});
+  assert.deepEqual(placementIssue(state.placements,"flask",2,3,1),{reason:"outside"});
+  for (const args of [["missing",0,0,0],["__proto__",0,0,0],["apples",NaN,0,0],["apples",0,0.5,0],["apples",0,0,Infinity]]) {
+    assert.deepEqual(placementIssue(state.placements,...args),{reason:"invalid"});
+  }
+  assert.equal(placementIssue(state.placements,"flask",3,0),null);
+});
+
+test("overlap feedback names each blocker once and ignores only the moving item", () => {
+  let state=place(newPacking(),"sandwiches",0,0);
+  state=place(state,"flask",2,0);
+  const issue={reason:"overlap",blockers:["flask","sandwiches"]};
+  assert.deepEqual(placementIssue(state.placements,"blanket",0,0,1),issue);
+  assert.deepEqual(placementIssue(Object.fromEntries(Object.entries(state.placements).reverse()),"blanket",0,0,1),issue);
+  assert.equal(placementIssue(state.placements,"sandwiches",0,1),null);
+  assert.deepEqual(placementIssue(state.placements,"sandwiches",1,0),{reason:"overlap",blockers:["flask"]});
+  // Edges take precedence when a placement would both overlap and leave the bag.
+  assert.deepEqual(placementIssue(state.placements,"blanket",1,-1),{reason:"outside"});
+});
+
+test("rejected placements and their explanations leave the arrangement and undo history intact", () => {
+  const state=place(newPacking(),"sandwiches",0,0);
+  const snapshot=structuredClone(state);
+  for (const args of [["apples",0,0,0],["flask",3,3,0]]) {
+    assert.ok(placementIssue(state.placements,...args));
+    assert.strictEqual(place(state,...args),state);
+    assert.deepEqual(state,snapshot);
+  }
+  assert.deepEqual(undo(state),newPacking());
+});
+
+test("placement feedback preserves the original geometric acceptance rules", () => {
+  const arrangements=[newPacking()];
+  for (const args of solution) arrangements.push(place(arrangements.at(-1),...args));
+  for (const state of arrangements) for (const id of Object.keys(items)) {
+    const board=occupied(state.placements,id);
+    for(let turns=0;turns<4;turns++) for(let x=-1;x<=4;x++) for(let y=-1;y<=4;y++) {
+      const expected=shape(id,turns).every(([dx,dy]) => x+dx>=0 && y+dy>=0 && x+dx<bagSize && y+dy<bagSize && !board.has(`${x+dx},${y+dy}`));
+      assert.equal(canPlace(state.placements,id,x,y,turns),expected);
+      assert.equal(placementIssue(state.placements,id,x,y,turns)===null,expected);
+    }
+  }
 });
 
 test("remove and undo restore the exact preceding arrangement", () => {
