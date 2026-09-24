@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#f6f3ec" />
+    <meta name="description" content="Musefloor's outreach desk. Work on an ad, plan the costs, and keep the two together." />
+    <title>Outreach desk — Musefloor</title>
+    <link rel="stylesheet" href="outreach.css" />
+    <link rel="stylesheet" href="brand.css" />
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/musefloor-icon-v2.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/musefloor-touch-v2.png" />
+    <script type="module" src="outreach.js"></script>
+  </head>
+  <body>
+    <div class="desk-page">
+      <header class="desk-header"><a class="desk-brand" href="index.html" aria-label="Musefloor home"><img class="brand-logo" src="assets/musefloor-logo-v2.png" width="32" height="32" alt="" />musefloor</a><a href="floor.html#projects">Back to the company ↗</a></header>
+      <main>
+        <div class="desk-intro"><div><p class="eyebrow">The company / Outreach desk</p><h1>Tell people about it.</h1><p>Something to say. A place to send them. A plan for what it costs.</p></div><a class="discussion-link" href="floor.html#general">Join the conversation ↗</a></div>
+        <nav class="desk-nav" aria-label="On this page"><a href="#ads">Ad drafts</a><a href="#expenses">Expenses</a><span>Nothing is posted or purchased here.</span></nav>
+        <p id="save-note" class="save-note" role="status">Changes stay in this browser.</p>
+        <noscript><p>This desk needs JavaScript to edit drafts and expenses. No ads or purchases will be made. <a href="floor.html#general">Read the studio conversation.</a></p></noscript>
+        <fieldset id="desk-controls" disabled>
+          <legend class="sr-only">Outreach desk</legend>
+          <section id="ads" aria-labelledby="ads-title">
+            <div class="section-heading"><div><p class="section-number">01 / The invitation</p><h2 id="ads-title">Make a little noise.</h2></div><p>A starting draft, not an ad campaign.</p></div>
+            <div class="creative-layout">
+              <div class="draft-editor">
+                <label for="campaign">What are we sharing?</label><select id="campaign"><option value="lantern">Lantern Catch</option><option value="garden">Pocket Garden</option><option value="picnic">Pack a little picnic</option></select>
+                <label for="headline">Headline <span>72 characters max</span></label><input id="headline" maxlength="72" />
+                <label for="ad-body">The pitch <span>400 characters max</span></label><textarea id="ad-body" rows="4" maxlength="400"></textarea>
+                <div class="destination"><span>Send people to</span><a id="destination" href="lantern.html">Lantern Catch ↗</a></div>
+                <details class="copy-text"><summary>Plain-text version</summary><label class="sr-only" for="ad-copy">Ad text to copy</label><textarea id="ad-copy" rows="7" readonly></textarea></details>
+                <div class="draft-actions"><button type="button" class="primary" id="copy-ad">Copy ad text ↗</button><span id="character-count"></span></div><p id="ad-status" class="status-line" role="status"></p>
+              </div>
+              <figure class="preview-sheet"><figcaption><span>Layout preview</span><span id="preview-name">Lantern Catch</span></figcaption><div class="ad-poster" id="ad-poster"><div class="poster-brand"><img src="assets/musefloor-icon-v2.png" alt="" width="28" height="28" /><span>Made at Musefloor</span></div><div class="poster-copy"><p id="preview-headline">Same evening. Your turn.</p><p id="preview-body">Catch a jarful of fireflies. Send this round to a friend and see how you both do.</p></div><div class="poster-bottom"><span>Play in your browser<br /><strong>musefloor.world ↗</strong></span><span id="preview-symbol" aria-hidden="true">✦</span></div></div><p class="preview-caption">Words first. Copy the text when it’s ready; this preview isn’t an image export.</p></figure>
+            </div>
+          </section>
+          <section id="expenses" aria-labelledby="expenses-title">
+            <div class="section-heading"><div><p class="section-number">02 / The cost</p><h2 id="expenses-title">Keep the numbers straight.</h2></div><p>Manual entries in USD. No bank or ad account connected.</p></div>
+            <div class="budget-strip"><form id="budget-form"><label for="budget">Outreach budget <span>USD</span></label><div class="budget-input"><input id="budget" inputmode="decimal" value="0.00" required maxlength="9" aria-describedby="budget-help" /><button type="submit">Set budget</button></div><p id="budget-help">Planning cap, not money in an account.</p></form><dl><div><dt>Planned</dt><dd id="planned-total">$0.00</dd></div><div><dt>Recorded paid</dt><dd id="paid-total">$0.00</dd></div><div><dt id="remaining-label">Unallocated</dt><dd id="remaining-total">$0.00</dd></div></dl></div>
+            <p id="budget-status" class="status-line" role="status"></p>
+            <div class="ledger-heading"><h3>Expense notes</h3><button type="button" class="text-button" id="export-expenses" disabled>Export CSV ↓</button></div>
+            <p class="ledger-help">Planned and paid entries both count against the budget. Select a status to change it. These are your notes, not verified company accounts.</p>
+            <div class="table-wrap"><table><caption class="sr-only">Outreach expenses</caption><thead><tr><th scope="col">What it’s for</th><th scope="col">Status</th><th scope="col" class="amount">USD</th><th scope="col"><span class="sr-only">Actions</span></th></tr></thead><tbody id="expense-rows"></tbody></table><p id="empty-expenses" class="empty-expenses">No expenses logged.<span>Add an estimate or an actual cost when you have one.</span></p></div>
+            <div class="ledger-feedback"><p id="expense-status" class="status-line" role="status"></p><button type="button" id="undo-remove" class="text-button" disabled>Undo last removal</button></div>
+            <form id="expense-form" class="expense-form"><div><label for="expense-name">Expense</label><input id="expense-name" placeholder="e.g. Short gameplay clip" maxlength="80" required /></div><div><label for="expense-amount">Amount (USD)</label><input id="expense-amount" inputmode="decimal" placeholder="0.00" maxlength="9" required /></div><div><label for="expense-kind">Status</label><select id="expense-kind"><option value="planned">Planned</option><option value="paid">Paid</option></select></div><button type="submit" class="primary">Add expense</button></form>
+          </section>
+        </fieldset>
+      </main>
+      <footer class="desk-footer"><span>A small desk for getting the word out.</span><a href="https://github.com/musefloor/musefloor/issues/23" target="_blank" rel="noopener noreferrer">About this work ↗</a></footer>
+    </div>
+  </body>
+</html>

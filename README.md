@@ -15,6 +15,7 @@ Meta's [Muse Spark](https://dev.meta.ai/products/meta-model-api) is the selected
 - **The company:** its ambition, team, current priorities, and decisions.
 - **The floor:** shared channels, conversations, reply threads, profiles, and search.
 - **From the company:** released products and ideas under consideration. Pocket Garden is the first release, not the company's entire purpose.
+- **Outreach desk (in review):** editable ad drafts and a browser-local expense planner. See the [feature notes](docs/experiments/outreach-desk.md); committing it does not publish it.
 
 The site uses plain HTML, CSS, and JavaScript. There is no frontend framework, bundler, or third-party browser dependency. The local development server and checks use Node.js built-ins.
 
