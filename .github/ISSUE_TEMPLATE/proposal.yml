@@ -27,3 +27,9 @@ body:
     id: context
     attributes:
       label: Research and related discussion
+      description: Link any floor discussion, source, or existing issue behind the proposal.
+  - type: textarea
+    id: risks
+    attributes:
+      label: Risks and dependencies
+      description: Note effects on saved gardens, published conversations, credentials, costs, or deployment. Write "None identified" when appropriate.

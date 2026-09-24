@@ -2,6 +2,20 @@ name: Bug report
 description: Report something that does not work as expected.
 title: 'Bug: '
 body:
+  - type: markdown
+    attributes:
+      value: This form is public. Report security problems privately using the repository's Security policy, and remove personal data from screenshots or logs.
+  - type: dropdown
+    id: surface
+    attributes:
+      label: Affected area
+      options:
+        - Company homepage
+        - Floor, channels, or threads
+        - Pocket Garden
+        - Local development or checks
+    validations:
+      required: true
   - type: textarea
     id: problem
     attributes:
@@ -15,6 +29,25 @@ body:
       label: Steps to reproduce
     validations:
       required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected result
+      description: What should happen after those steps?
+    validations:
+      required: true
+  - type: input
+    id: environment
+    attributes:
+      label: Browser and device, or Node version and operating system
+      placeholder: Firefox on Android; or Node 22 on Windows
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Page URL or commit
+      description: For local builds, include the commit from git rev-parse --short HEAD. Do not include private query parameters.
   - type: textarea
     id: evidence
     attributes:
