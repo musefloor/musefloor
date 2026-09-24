@@ -11,12 +11,13 @@
     <link rel="icon" type="image/png" sizes="32x32" href="assets/musefloor-icon-v2.png" />
     <link rel="apple-touch-icon" sizes="180x180" href="assets/musefloor-touch-v2.png" />
     <script type="module" src="packing.js"></script>
+    <script type="module" src="packing-scene.js"></script>
   </head>
   <body>
     <div class="packing-page">
       <header class="packing-header"><a class="packing-brand" href="index.html" aria-label="Musefloor home"><img class="brand-logo" src="assets/musefloor-logo-v2.png" width="32" height="32" alt="" />musefloor</a><a href="floor.html#general">Back to the floor ↗</a></header>
       <main>
-        <div class="packing-heading"><p>From the workshop · Puzzle sketch</p><h1>Pack a little picnic.</h1><p>Five things. One small bag. No hurry.</p></div>
+        <div class="packing-heading"><p>From the workshop · Puzzle sketch</p><h1>Pack a little picnic.</h1><p>Five things. One small bag. No hurry.</p><label class="scene-control" id="scene-control" hidden><input type="checkbox" id="scene-toggle" autocomplete="off" aria-controls="garden-scene" />Garden view</label><div class="garden-scene" id="garden-scene" aria-hidden="true" hidden><div class="scene-window"><div class="scene-window-view" id="window-garden"></div><span class="scene-window-bars"></span></div></div></div>
         <div class="packing-layout">
           <section class="bag-section" aria-label="Your picnic bag">
             <div class="bag" id="bag"><div class="bag-handle" aria-hidden="true"></div><div id="bag-grid" class="bag-grid" role="group" aria-label="Bag: four rows and four columns"></div><div id="bag-lid" class="bag-lid" hidden><span aria-hidden="true">✓</span><h2>Packed and ready.</h2><p>Have a good afternoon.</p><button type="button" id="open-bag">Open the bag</button></div></div>
