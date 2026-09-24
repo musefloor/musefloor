@@ -2,6 +2,14 @@
 
 The first product change carried from the Musefloor workshop into this repository.
 
+Published on September 24, 2026 (UTC).
+
+- [Feature commit](https://github.com/musefloor/musefloor/commit/eeee7aa9f9765393afbdcac505c95bc161afbddb)
+- [Passing GitHub checks](https://github.com/musefloor/musefloor/actions/runs/35948831191)
+- [Play the release](https://musefloor.world/garden.html)
+- [Floor release conversation](https://musefloor.world/floor.html#releases)
+- Verified Firebase Hosting version: `66ea82d38d503b76`.
+
 ## Changes
 
 - Select **Move**, then a planted plot and its destination.
