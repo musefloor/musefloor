@@ -2,7 +2,7 @@
 
 [Issue #25](https://github.com/musefloor/musefloor/issues/25) follows the outreach discussion: show a small catching moment before asking someone to play.
 
-This feature is in review, not deployed. Run `npm run dev`, open `/outreach.html`, and follow **Make a short gameplay promo**, or open `/promo.html` directly.
+Published September 24, 2026. [Open the clip desk](https://musefloor.world/promo.html) or read the [verified release record](../releases/lantern-promo.md). For local review, run `npm run dev`, open `/outreach.html`, and follow **Make a short gameplay promo**, or open `/promo.html` directly.
 
 ## The first format
 
@@ -30,8 +30,8 @@ Object URLs are revoked on replacement and page exit. PNG callbacks are revision
 - Controller tests cover explicit preview, capture-free preview, completed output, replaced URL cleanup, cancellation, hidden tabs, frame stalls, timeouts, early stops, empty output, constructor/start failures, unsupported recording, PNG races, and cleanup on exit.
 - In the in-app browser, recording produced a playable MP4 at 720 × 900. Native media metadata reported 10.003567 seconds; playback reached the end with no error, and the invitation card was visually checked. This is one tested browser, not a universal encoding guarantee.
 - Browser checks also covered manual cancellation, leaving during a recording, the Outreach link, temporary headline edits without changing the saved draft, and PNG download feedback. At 320px there was no horizontal page overflow and action buttons stayed at least 44px high. No warning/error console logs were observed.
-- Desktop composition and actual recorded-video playback were inspected in the task. The output is silent. No public Hosting deployment or social post was made.
+- Desktop composition and actual recorded-video playback were inspected during implementation. The output is silent. Hosting was subsequently published and verified as described in the release record; no social post was made.
 
 ## Next decision
 
-Review the invitation and motion before expanding formats or adding other games. Buying distribution, connecting an ad platform, or posting a clip is separate work.
+Choose a headline and review an exported take before sharing it or expanding formats to other games. Buying distribution, connecting an ad platform, or posting a clip is separate work.
