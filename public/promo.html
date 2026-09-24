@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#f6f3ec" /><meta name="description" content="Make a short Lantern Catch promo. Preview, record, and save a clip in your browser." />
+    <title>Clip desk — Musefloor</title>
+    <link rel="stylesheet" href="outreach.css" /><link rel="stylesheet" href="promo.css" /><link rel="stylesheet" href="brand.css" />
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/musefloor-icon-v2.png" /><link rel="apple-touch-icon" sizes="180x180" href="assets/musefloor-touch-v2.png" />
+    <script type="module" src="promo.js"></script>
+  </head>
+  <body>
+    <div class="desk-page">
+      <header class="desk-header"><a class="desk-brand" href="index.html" aria-label="Musefloor home"><img class="brand-logo" src="assets/musefloor-logo-v2.png" width="32" height="32" alt="" />musefloor</a><a href="outreach.html">Back to the outreach desk ↗</a></header>
+      <main>
+        <div class="desk-intro"><div><p class="eyebrow">Outreach / Clip desk</p><h1>Show the little moment.</h1><p>A ten-second invitation to Lantern Catch.</p></div></div>
+        <div class="clip-layout">
+          <section class="clip-editor" aria-labelledby="clip-title"><p class="section-number">01 / Set the scene</p><h2 id="clip-title">A catch. Then a click.</h2><p class="clip-deck">Eight seconds of example play, followed by an invitation. Keep the headline short and let the game do the talking.</p>
+            <label for="clip-headline">Your headline</label><input id="clip-headline" maxlength="72" value="Same evening. Your turn." disabled />
+            <p id="draft-note" class="clip-note">Starts with your saved Lantern headline, when available. Edits here do not change the outreach draft.</p>
+            <div class="clip-spec"><span>720 × 900 · Portrait</span><span>10 seconds · Silent</span></div>
+            <div class="clip-actions"><button type="button" id="preview-clip" disabled>Preview clip</button><button type="button" class="primary" id="record-clip" disabled>Record clip</button><button type="button" id="cancel-clip" disabled>Stop</button></div>
+            <p id="clip-status" role="status" class="status-line">Preparing the canvas…</p><progress id="clip-progress" max="10" value="0" aria-label="Clip progress"></progress>
+            <p id="format-note" class="clip-note">Checking recording support…</p>
+            <button type="button" id="save-still" class="text-button" disabled>Save current frame as PNG ↓</button><p id="still-status" class="status-line" role="status"></p>
+            <div class="clip-destination"><h3>Send people to the same round</h3><label class="sr-only" for="promo-link">Playable round link</label><input id="promo-link" readonly value="https://musefloor.world/lantern.html?round=v1-0000002a" /><a href="lantern.html?round=v1-0000002a">Try the round ↗</a></div>
+            <p class="clip-note">Scripted example play using the game’s rules, not a player recording. No camera, microphone, upload, or automatic posting.</p>
+          </section>
+          <figure class="clip-preview"><figcaption><span>Lantern Catch</span><span>Promo preview</span></figcaption><canvas id="promo-canvas" width="720" height="900" role="img" aria-label="Lantern Catch promo: a jar catches fireflies in a dusk scene, followed by an invitation to play.">A scripted Lantern Catch demo. Catch glowing fireflies, avoid leaves, then try the linked round.</canvas></figure>
+        </div>
+        <section id="clip-result" class="clip-result" aria-labelledby="result-title" hidden><div><p class="section-number">02 / Your take</p><h2 id="result-title">Give it a watch.</h2><p id="result-info"></p><a id="download-clip" class="download-clip" download>Download clip ↓</a><p class="clip-note">Preview the actual file before sharing. Video-format support varies between social platforms.</p></div><video id="recorded-video" controls playsinline preload="metadata" aria-label="Recorded promo playback"></video></section>
+        <noscript><p>This tool needs JavaScript. You can still <a href="lantern.html">open Lantern Catch</a>.</p></noscript>
+      </main>
+      <footer class="desk-footer"><span>One clear invitation.</span><a href="https://github.com/musefloor/musefloor/issues/25" target="_blank" rel="noopener noreferrer">About this work ↗</a></footer>
+    </div>
+  </body>
+</html>
