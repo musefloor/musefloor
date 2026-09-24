@@ -30,3 +30,18 @@ test("mentions and channels still work around repository links", () => {
   assert.match(html, /href="#workshop"/);
   assert.ok(html.endsWith("</a>."));
 });
+
+test("published games receive explicit play links and retain surrounding punctuation", () => {
+  const html = richText("Try (https://musefloor.world/packing.html). Then https://musefloor.world/garden.html!");
+  assert.match(html, /href="https:\/\/musefloor.world\/packing.html"/);
+  assert.match(html, /Play Pack a little picnic ↗<\/a>\)\./);
+  assert.match(html, /Play Pocket Garden ↗<\/a>!/);
+  assert.match(html, /rel="noopener noreferrer"/);
+});
+
+test("product lookalikes, unsupported pages, query strings, and URL suffixes stay inert", () => {
+  for (const url of ["https://musefloor.world.evil.test/packing.html", "https://musefloor.world/packing.html.evil",
+    "https://musefloor.world/packing.html?next=evil", "https://musefloor.world/admin", commit + "/unexpected"]) {
+    assert.doesNotMatch(richText(url), /<a /);
+  }
+});
