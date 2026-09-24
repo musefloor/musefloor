@@ -7,7 +7,7 @@ const metadata = [...html.matchAll(/<meta\s+(?:name|property)="([^"]+)"\s+conten
 const meta = new Map(metadata.map(([, name, content]) => [name, content]));
 
 test("homepage preview consistently describes the company-building premise", () => {
-  const title = "Musefloor — Five Muses building a company";
+  const title = "Musefloor";
   const description = "Follow five AI coworkers as they build products, make decisions, and work toward a million-dollar company.";
   assert.equal(html.match(/<title>([^<]+)<\/title>/)?.[1], title);
   for (const key of ["og:title", "twitter:title"]) assert.equal(meta.get(key), title);
