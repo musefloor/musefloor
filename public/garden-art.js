@@ -16,14 +16,21 @@ export function plantArt(type, stage = 2) {
   return `<svg viewBox="0 0 100 110" aria-hidden="true"><ellipse cx="50" cy="96" rx="26" ry="6" fill="#395637" opacity=".12"/>${drawing(type, stage)}</svg>`;
 }
 
-export function gardenArt() {
-  const plants = ["lavender", "daisy", "mint", "mint", "daisy", "lavender", "daisy", "mint", "daisy"];
+export function gardenArt(state) {
+  const defaults = ["lavender", "daisy", "mint", "mint", "daisy", "lavender", "daisy", "mint", "daisy"];
+  const plants = Array.from({ length: 9 }, (_, index) => {
+    if (state === undefined) return { type: defaults[index], stage: 2 };
+    const plant = Array.isArray(state) ? state[index] : null;
+    return plant && Object.hasOwn(seeds, plant.type) && Number.isInteger(plant.stage) && plant.stage >= 0 && plant.stage <= 2
+      ? { type: plant.type, stage: plant.stage } : null;
+  });
   let plots = "";
   for (let row = 0; row < 3; row += 1) {
     for (let col = 0; col < 3; col += 1) {
       const x = 400 + (col - row) * 111;
       const y = 89 + (col + row) * 58;
-      plots += `<g transform="translate(${x} ${y})"><path d="M0 0 99 51 0 102-99 51Z" fill="#ba9872"/><path d="M-99 51 0 102 99 51v13L0 115-99 64Z" fill="#a6835f"/><path d="M0 8 86 51 0 94-86 51Z" fill="#ddc2a0"/><g fill="#b3926b" opacity=".6"><ellipse cx="-40" cy="50" rx="3" ry="1.5"/><ellipse cx="37" cy="62" rx="2" ry="1"/><ellipse cx="14" cy="76" rx="3" ry="1.5"/><ellipse cx="18" cy="39" rx="2" ry="1"/></g><g transform="translate(-55 -45) scale(1.1)">${drawing(plants[row * 3 + col], 2)}</g></g>`;
+      const plant = plants[row * 3 + col];
+      plots += `<g transform="translate(${x} ${y})"><title>Plot ${row * 3 + col + 1}: ${plant ? `${seeds[plant.type].name}, ${["seed", "sprout", "in bloom"][plant.stage]}` : "empty"}</title><path d="M0 0 99 51 0 102-99 51Z" fill="#ba9872"/><path d="M-99 51 0 102 99 51v13L0 115-99 64Z" fill="#a6835f"/><path d="M0 8 86 51 0 94-86 51Z" fill="#ddc2a0"/><g fill="#b3926b" opacity=".6"><ellipse cx="-40" cy="50" rx="3" ry="1.5"/><ellipse cx="37" cy="62" rx="2" ry="1"/><ellipse cx="14" cy="76" rx="3" ry="1.5"/><ellipse cx="18" cy="39" rx="2" ry="1"/></g>${plant ? `<g transform="translate(-55 -45) scale(1.1)">${drawing(plant.type, plant.stage)}</g>` : ""}</g>`;
     }
   }
   return `<svg viewBox="0 0 800 510" role="img" aria-label="A little garden of daisies, lavender, and mint in nine raised beds"><rect width="800" height="510" fill="#dfe8d4"/><path d="M0 371Q168 305 304 373T800 348V510H0Z" fill="#d4dfc7"/><ellipse cx="404" cy="338" rx="312" ry="133" fill="#c7d5b9" opacity=".65"/><g fill="#98ad84"><path d="m96 366-4-15 9 13 8-17-3 21Z"/><path d="m660 327 2-18 7 17 11-8-6 17Z"/><path d="m592 445-2-15 7 13 9-13-4 18Z"/><path d="m179 133 2-12 5 11 8-6-6 13Z"/></g>${plots}<g transform="translate(128 357) rotate(-14)"><rect width="45" height="57" rx="3" fill="#f6eed6"/><rect x="5" y="5" width="35" height="33" rx="2" fill="#e5ce87"/><path d="M24 31V18m0 7-9-4m9 0 8-6" stroke="#698451" stroke-width="3"/><path d="M9 46h27M9 51h18" stroke="#a79a77" stroke-width="2"/></g><g transform="translate(628 161) rotate(15)"><ellipse cx="21" cy="22" rx="23" ry="16" fill="none" stroke="#597b72" stroke-width="8"/><path d="M1 23h40v41H1Z" fill="#7c9f92"/><ellipse cx="21" cy="23" rx="20" ry="7" fill="#99b8a5"/><path d="m40 42 26-15 6 5-31 25Z" fill="#6b9183"/><path d="m64 24 10 13" stroke="#44685f" stroke-width="5" stroke-linecap="round"/></g></svg>`;

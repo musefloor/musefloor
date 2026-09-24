@@ -1,5 +1,6 @@
 import { seeds, plantArt } from "./garden-art.js";
 import { selectMove } from "./garden-moves.js";
+import { postcardPng } from "./garden-postcard.js";
 
 const storageKey = "muse.pocket-garden.v1";
 let plots = Array(9).fill(null);
@@ -10,6 +11,9 @@ const grid = document.querySelector("#plot-grid");
 const status = document.querySelector("#garden-status");
 const saveNote = document.querySelector("#save-note");
 const resetDialog = document.querySelector("#reset-dialog");
+const postcardButton = document.querySelector("#postcard");
+const postcardDialog = document.querySelector("#postcard-dialog");
+let postcardUrl = null;
 
 try {
   const saved = JSON.parse(localStorage.getItem(storageKey));
@@ -93,7 +97,7 @@ grid.addEventListener("click", (event) => {
 document.querySelectorAll("[data-tool]").forEach((button) => button.addEventListener("click", () => chooseTool(button.dataset.tool)));
 document.querySelector("#compact-tool").addEventListener("change", (event) => chooseTool(event.target.value));
 document.addEventListener("keydown", (event) => {
-  if (event.key !== "Escape" || selectedPlot === null || resetDialog.open) return;
+  if (event.key !== "Escape" || selectedPlot === null || resetDialog.open || postcardDialog.open) return;
   event.preventDefault();
   const previous = selectedPlot;
   selectedPlot = null;
@@ -120,5 +124,36 @@ resetDialog.addEventListener("close", () => {
   if (resetDialog.returnValue !== "reset") return;
   plots = Array(9).fill(null); save(); render(); chooseTool("daisy");
   status.textContent = "A fresh patch. What will you plant?";
+});
+postcardButton.addEventListener("click", async () => {
+  postcardButton.disabled = true;
+  postcardButton.setAttribute("aria-busy", "true");
+  status.textContent = "Making your postcard…";
+  try {
+    const image = await postcardPng(plots);
+    postcardUrl = URL.createObjectURL(image);
+    document.querySelector("#postcard-preview").src = postcardUrl;
+    document.querySelector("#postcard-download").href = postcardUrl;
+    postcardDialog.showModal();
+    document.querySelector("#postcard-download").focus();
+    status.textContent = "Your postcard is ready to save.";
+  } catch {
+    if (postcardUrl) URL.revokeObjectURL(postcardUrl);
+    postcardUrl = null;
+    status.textContent = "Could not make the postcard. Your garden is unchanged. Please try again.";
+  } finally {
+    postcardButton.disabled = false;
+    postcardButton.removeAttribute("aria-busy");
+  }
+});
+document.querySelector("#postcard-close").addEventListener("click", () => postcardDialog.close());
+postcardDialog.addEventListener("close", () => {
+  const expired = postcardUrl;
+  postcardUrl = null;
+  document.querySelector("#postcard-preview").removeAttribute("src");
+  document.querySelector("#postcard-download").removeAttribute("href");
+  // Let an explicitly requested download start before releasing its source.
+  if (expired) setTimeout(() => URL.revokeObjectURL(expired), 30000);
+  postcardButton.focus();
 });
 render(); chooseTool("daisy");

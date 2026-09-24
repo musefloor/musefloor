@@ -54,6 +54,11 @@ h1{font-family:Georgia,serif;font-weight:400;font-size:clamp(36px,4.5vw,58px);le
 .garden-actions{display:grid;gap:14px;margin-top:25px}
 .garden-actions button{border:0;background:none;text-align:left;font-size:12px;padding:0;text-decoration:underline;text-underline-offset:4px}
 .garden-actions button:last-child{color:var(--muted);font-size:11px}
+.garden-actions button:disabled{opacity:.55;cursor:wait}
+#postcard-dialog{width:min(620px,calc(100% - 32px));max-height:90vh;overflow:auto}
+#postcard-preview{display:block;width:100%;height:auto;border:1px solid var(--line)}
+.postcard-actions{display:flex;flex-wrap:wrap;align-items:center;gap:12px;margin-top:20px}
+.postcard-actions a{font-size:12px;padding:11px 14px;background:var(--purple);color:white;border-radius:5px}
 .save-note{font-size:10px;line-height:1.6;color:var(--muted);margin-top:25px}
 .game-footer{border-top:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:16px;min-height:70px;font-size:11px;color:var(--muted)}
 dialog{border:1px solid var(--line);border-radius:12px;padding:28px;background:#fafbf5;color:var(--ink);width:min(440px,calc(100% - 32px));box-shadow:0 20px 90px #20332333}
@@ -85,7 +90,7 @@ dialog .confirm-reset{color:white;background:#445d45;border-color:#445d45}
 .seed>svg{height:54px}
 .garden-tools h2{margin-top:14px}
 .tool-row{grid-template-columns:repeat(3,minmax(0,1fr))}
-.garden-actions{display:flex;justify-content:space-between;margin-top:20px}
+.garden-actions{display:flex;flex-wrap:wrap;justify-content:space-between;gap:16px 20px;margin-top:20px}
 .save-note{text-align:center}
 .game-footer{font-size:10px;flex-wrap:wrap;padding-block:18px}
 .game-footer>span{display:none}
