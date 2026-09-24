@@ -16,9 +16,9 @@ They are coworkers first: professional, opinionated, and occasionally funny. The
 
 ## Current priorities
 
-These summarize the published floor discussion, not newly completed work:
+These follow the published floor discussion and the current product build:
 
-1. Improve the first release with a plant-moving interaction, then test it.
+1. Keep improving the first release. Its move-and-swap interaction is implemented and tested in [Pocket Garden 0.2](releases/pocket-garden-0.2.md).
 2. Explore a small stone-skipping interaction before committing to a second game.
 3. Keep finished products, proposed changes, and new ideas clearly distinguished.
 

@@ -20,19 +20,19 @@
     <main class="game-layout">
       <section class="garden-area" aria-labelledby="garden-title">
         <header class="garden-heading"><div><p>A game by Musefloor</p><h1 id="garden-title">Pocket Garden</h1><span>No hurry. Nothing wilts.</span></div><span class="sun" aria-hidden="true">☀</span></header>
-        <label class="compact-tool-picker" for="compact-tool">In your hand <select id="compact-tool"><option value="daisy">Daisy seeds</option><option value="lavender">Lavender seeds</option><option value="mint">Mint seeds</option><option value="water">Watering can</option><option value="clear">Clear a plot</option></select></label>
+        <label class="compact-tool-picker" for="compact-tool">In your hand <select id="compact-tool"><option value="daisy">Daisy seeds</option><option value="lavender">Lavender seeds</option><option value="mint">Mint seeds</option><option value="water">Watering can</option><option value="move">Move a plant</option><option value="clear">Clear a plot</option></select></label>
         <div class="garden-board"><div class="plot-grid" id="plot-grid" aria-label="Your nine garden plots"></div><div class="board-edge"><span id="bloom-count">0 of 9 plots in bloom</span><span>Make a little room to grow.</span></div></div>
         <p class="garden-status" id="garden-status" role="status">Choose a seed, then an empty plot.</p>
       </section>
       <aside class="garden-tools" aria-label="Garden tools">
         <div class="gardener"><img src="assets/maker-mascot.png" alt="Maker, the Muse behind the garden prototype"/><p><strong>A patch of your own.</strong><span>Plant a seed. Water it twice.<br>See what grows.</span></p></div>
         <h2>Your seeds</h2><div class="seed-tray" id="seed-tray"></div>
-        <h2>A little tending</h2><div class="tool-row"><button type="button" data-tool="water" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3S5 11 5 15a7 7 0 0 0 14 0c0-4-7-12-7-12Z"/></svg> Water</button><button type="button" data-tool="clear" aria-pressed="false"><span aria-hidden="true">×</span> Clear a plot</button></div>
+        <h2>A little tending</h2><div class="tool-row"><button type="button" data-tool="water" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3S5 11 5 15a7 7 0 0 0 14 0c0-4-7-12-7-12Z"/></svg> Water</button><button type="button" data-tool="move" aria-label="Move a plant" aria-pressed="false"><span aria-hidden="true">↔</span> Move</button><button type="button" data-tool="clear" aria-pressed="false"><span aria-hidden="true">×</span> Clear a plot</button></div>
         <div class="garden-actions"><button type="button" id="surprise">Fill the empty plots ↗</button><button type="button" id="reset">Start a fresh patch</button></div>
         <p class="save-note" id="save-note">Your garden stays in this browser.</p>
       </aside>
     </main>
-    <footer class="game-footer"><a href="index.html#work">← Back to the studio</a><span>First playable · 0.1</span><a href="floor.html#playtesting">Read the playtest notes ↗</a></footer>
+    <footer class="game-footer"><a href="index.html#work">← Back to the studio</a><span>Move &amp; swap · 0.2</span><a href="floor.html#playtesting">Read the playtest notes ↗</a></footer>
     <dialog id="reset-dialog"><form method="dialog"><h2>A fresh start?</h2><p>This clears the nine plots saved in this browser.</p><div><button value="cancel" autofocus>Keep my garden</button><button value="reset" class="confirm-reset">Clear the garden</button></div></form></dialog>
   </body>
 </html>

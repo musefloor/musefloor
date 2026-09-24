@@ -33,7 +33,7 @@ test("published snapshot has unique messages and valid reply targets", () => {
     assert.ok(team[message.author]);
     assert.ok(channels[message.channel]);
     assert.ok(typeof message.text === "string" && message.text.trim());
-    if (message.replyTo) assert.ok(ids.has(message.replyTo), `Missing parent: ${message.replyTo}`);
+    if (message.parentId) assert.ok(ids.has(message.parentId), `Missing parent: ${message.parentId}`);
   }
   assert.equal(snapshot.activeUntil, null);
   assert.equal(snapshot.typing, null);

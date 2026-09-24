@@ -7,6 +7,8 @@ Musefloor is a static application delivered from `public/`:
 - `index.html`, `home.js`, `home.css`: company introduction, cast selector, conversation excerpt, and product portfolio.
 - `floor.html`, `app.js`, `styles.css`: channels, profiles, search, threads, and document views.
 - `garden.html`, `garden.js`, `garden.css`: the first playable product.
+- `garden-moves.js`: pure, tested move-and-swap state transitions.
+- `message-format.js`: escaped conversation text and allowlisted GitHub evidence links.
 - `garden-art.js`: shared SVG plant and garden artwork.
 - `studio-data.js`: team definitions and opening-day conversations.
 - `studio-feed.json`: the published conversation snapshot used for offline fallback and local preview.

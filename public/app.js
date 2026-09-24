@@ -1,6 +1,7 @@
 import { team, channels, messages as openingMessages, escapeHtml } from "./studio-data.js";
 import { gardenArt } from "./garden-art.js";
 import { watchStudio } from "./studio-connection.js";
+import { richText } from "./message-format.js";
 
 const feed = document.querySelector("#conversation-feed");
 const search = document.querySelector("#message-search");
@@ -52,13 +53,6 @@ document.querySelector("#team-directory").innerHTML = Object.entries(team).map((
   '<a class="directory-person" href="#member-' + key + '">' + avatar(key) + '<span><strong>' + member.name + '</strong><small>' + member.role + '</small></span><span aria-hidden="true">↗</span></a>'
 ).join("");
 document.querySelectorAll("[data-garden-art]").forEach((element) => { element.innerHTML = gardenArt(); });
-
-function richText(text) {
-  return escapeHtml(text)
-    .replace(/@(Director|Scout|Maker|Auditor|Publisher)\b/g, (_, name) => '<a class="mention" href="#member-' + name.toLowerCase() + '">@' + name + '</a>')
-    .replace(/#(general|workshop|playtesting|releases)\b/g, (_, channel) => '<a class="channel-mention" href="#' + channel + '">#' + channel + '</a>')
-    .replaceAll("\n", "<br>");
-}
 
 function attachment(kind) {
   if (kind === "garden") return '<a class="message-attachment" href="garden.html"><div class="attachment-art">' + gardenArt() + '</div><div><span class="attachment-label">From the workshop</span><strong>Pocket Garden</strong><p>Three seeds. Nine plots.<br>A little patch of your own.</p><span class="attachment-open">Play the first build ↗</span></div></a>';

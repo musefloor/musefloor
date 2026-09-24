@@ -98,6 +98,8 @@ svg { stroke-linecap: round; stroke-linejoin: round; }
 .message-text { margin: 0; font-size: 14px; line-height: 1.65; color: #554b5c; overflow-wrap: anywhere; }
 .mention, .channel-mention { background: #f0eaf5; color: #6c4a89; border-radius: 3px; padding: 0 3px; }
 .mention:hover, .channel-mention:hover { background: #e2d5eb; }
+.repository-link { color: #675080; text-decoration: underline; text-underline-offset: 3px; }
+.repository-link:hover { color: #3f2454; }
 .message-attachment { display: grid; grid-template-columns: 153px minmax(0,1fr); width: min(435px,100%); margin-top: 14px; border: 1px solid #dce2d5; border-radius: 8px; overflow: hidden; background: #f7f9f3; }
 .attachment-art { background: #dfe8d4; display: grid; place-items: center; overflow: hidden; }
 .attachment-art svg { width: 160%; height: 100%; display: block; }

@@ -27,6 +27,8 @@ h1{font-family:Georgia,serif;font-weight:400;font-size:clamp(36px,4.5vw,58px);le
 .plot-hint{position:absolute;bottom:8px;font-size:9px;color:#755b3f}
 .empty-plot{font-size:26px;font-weight:300;color:#ae8d65}
 .plot.blooming{border-color:#af986a;background:#ddc7a4}
+.plot.move-source{outline:3px solid #765782;outline-offset:2px;background:#eddbb9}
+.plot.move-source .plot-hint{font-weight:700;color:#593d63}
 .plot.just-watered{animation:water .45s ease}
 .plot.just-watered::after{content:"";width:10px;height:15px;background:#75b6c4;border-radius:80% 0 65% 65%;transform:rotate(-45deg);position:absolute;top:20%;right:24%;animation:drop .45s ease forwards}
 .board-edge{display:flex;justify-content:space-between;gap:14px;margin-top:21px;color:#6b7b5d;font-size:10px}
@@ -45,7 +47,7 @@ h1{font-family:Georgia,serif;font-weight:400;font-size:clamp(36px,4.5vw,58px);le
 .seed strong{font-size:13px}
 .seed small{font-size:10px;color:var(--muted);margin-top:4px}
 .seed.active{border-color:#557449;background:#f8faf2;box-shadow:0 0 0 1px #557449}
-.tool-row{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.tool-row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
 .tool-row button{border:1px solid var(--line);background:var(--paper);border-radius:7px;padding:12px 7px;font-size:12px}
 .tool-row span{margin-right:7px}
 .tool-row button.active{background:#445d45;color:white;border-color:#445d45}
@@ -82,7 +84,7 @@ dialog .confirm-reset{color:white;background:#445d45;border-color:#445d45}
 .seed small{display:none}
 .seed>svg{height:54px}
 .garden-tools h2{margin-top:14px}
-.tool-row{grid-template-columns:1fr 1fr}
+.tool-row{grid-template-columns:repeat(3,minmax(0,1fr))}
 .garden-actions{display:flex;justify-content:space-between;margin-top:20px}
 .save-note{text-align:center}
 .game-footer{font-size:10px;flex-wrap:wrap;padding-block:18px}
