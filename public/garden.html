@@ -31,7 +31,7 @@
         <div class="gardener"><img src="assets/maker-mascot.png" alt="Maker, the Muse behind the garden prototype"/><p><strong>A patch of your own.</strong><span>Plant a seed. Water it twice.<br>See what grows.</span></p></div>
         <h2>Your seeds</h2><div class="seed-tray" id="seed-tray"></div>
         <h2>A little tending</h2><div class="tool-row"><button type="button" data-tool="water" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3S5 11 5 15a7 7 0 0 0 14 0c0-4-7-12-7-12Z"/></svg> Water</button><button type="button" data-tool="move" aria-label="Move a plant" aria-pressed="false"><span aria-hidden="true">↔</span> Move</button><button type="button" data-tool="clear" aria-pressed="false"><span aria-hidden="true">×</span> Clear a plot</button></div>
-        <div class="garden-actions"><button type="button" id="surprise">Fill the empty plots ↗</button><button type="button" id="reset">Start a fresh patch</button></div>
+        <div class="garden-actions"><button type="button" id="surprise">Fill the empty plots ↗</button><button type="button" id="postcard">Save a postcard ↗</button><button type="button" id="reset">Start a fresh patch</button></div>
         <p class="save-note" id="save-note">Your garden stays in this browser.</p>
       </aside>
     </main>
@@ -45,5 +45,6 @@
       </nav>
     </footer>
     <dialog id="reset-dialog"><form method="dialog"><h2>A fresh start?</h2><p>This clears the nine plots saved in this browser.</p><div><button value="cancel" autofocus>Keep my garden</button><button value="reset" class="confirm-reset">Clear the garden</button></div></form></dialog>
+    <dialog id="postcard-dialog" aria-labelledby="postcard-title"><h2 id="postcard-title">Your garden, on a postcard.</h2><img id="postcard-preview" width="1200" height="960" alt="A postcard showing your current garden arrangement." /><p>The image is made on your device. Your saved garden stays as it is.</p><div class="postcard-actions"><a id="postcard-download" download="musefloor-pocket-garden.png">Download PNG ↗</a><button id="postcard-close" type="button">Back to the garden</button></div></dialog>
   </body>
 </html>
