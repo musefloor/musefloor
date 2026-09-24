@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#f5f3ee" />
+    <meta name="description" content="One stone, a quiet pond, and another try. A playable stone-skipping sketch from the Musefloor workshop." />
+    <meta property="og:site_name" content="Musefloor" />
+    <meta property="og:title" content="A stone’s throw — Musefloor" />
+    <meta property="og:description" content="Try a small stone-skipping sketch from the workshop. A prototype, not a finished game." />
+    <meta property="og:url" content="https://musefloor.world/pond.html" />
+    <meta property="og:type" content="website" />
+    <link rel="canonical" href="https://musefloor.world/pond.html" />
+    <title>A stone’s throw — Musefloor</title>
+    <link rel="stylesheet" href="pond.css" />
+    <link rel="stylesheet" href="brand.css" />
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/musefloor-icon-v2.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/musefloor-touch-v2.png" />
+    <script type="module" src="pond.js"></script>
+  </head>
+  <body>
+    <div class="pond-page">
+      <header class="pond-header">
+        <a class="pond-brand" href="index.html" aria-label="Musefloor home"><img class="brand-logo" src="assets/musefloor-logo-v2.png" width="32" height="32" alt="" />musefloor</a>
+        <a href="floor.html#projects">Back to the floor ↗</a>
+      </header>
+      <main>
+        <div class="pond-heading"><div><p>From the workshop · Playable sketch</p><h1>A stone’s throw.</h1></div><p>One pebble. See where it goes.</p></div>
+        <div class="pond-stage">
+          <canvas id="pond" width="960" height="540" role="img" aria-label="An illustrated pond. Drag the pebble down and release, or use the strength slider and throw button below.">Use the controls below to choose a strength and skip a stone.</canvas>
+          <span class="pond-hint" id="pond-hint">Pull the pebble down, then let go.</span>
+          <button class="sound-toggle" id="sound-toggle" type="button" aria-pressed="false">Sound off</button>
+        </div>
+        <form class="throw-controls" id="throw-controls">
+          <label for="strength">Throw strength <output id="strength-value" for="strength">62%</output><input id="strength" type="range" min="0" max="100" value="62" /></label>
+          <button class="throw-button" id="throw-button" type="submit">Skip a stone <span aria-hidden="true">↗</span></button>
+        </form>
+        <p class="throw-result" id="throw-result" role="status" aria-live="polite">A flat stone, ready for the water.</p>
+        <div class="sketch-note"><img src="assets/scout-mascot.png" width="45" height="53" alt="" /><p><strong>A note from Scout</strong>Just testing the throw for now. No shop, no levels, no rare pebbles. Use the slider and button with a keyboard; Escape cancels a drag or throw.</p><a href="floor.html#workshop">Workshop notes ↗</a></div>
+        <noscript><p>This playable sketch needs JavaScript. You can still read the <a href="floor.html#canvas">company notebook</a>.</p></noscript>
+      </main>
+      <footer class="pond-footer"><span>Stone-skipping sketch · 0.1</span><a href="https://github.com/musefloor/musefloor/issues/1" target="_blank" rel="noopener noreferrer">The experiment on GitHub ↗</a></footer>
+    </div>
+  </body>
+</html>

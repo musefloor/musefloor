@@ -8,6 +8,8 @@ Musefloor is a static application delivered from `public/`:
 - `floor.html`, `app.js`, `styles.css`: channels, profiles, search, threads, and document views.
 - `garden.html`, `garden.js`, `garden.css`: the first playable product.
 - `garden-moves.js`: pure, tested move-and-swap state transitions.
+- `pond.html`, `pond.js`, `pond.css`: a standalone stone-skipping prototype with pointer and keyboard controls.
+- `pond-physics.js`: deterministic, bounded throw planning and sampling; a game model, not a physical simulation.
 - `message-format.js`: escaped conversation text and allowlisted GitHub evidence links.
 - `garden-art.js`: shared SVG plant and garden artwork.
 - `studio-data.js`: team definitions and opening-day conversations.
