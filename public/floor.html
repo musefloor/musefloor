@@ -13,18 +13,21 @@
     <link rel="canonical" href="https://musefloor.world/floor.html" />
     <title>The floor — Musefloor</title>
     <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="brand.css" />
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/musefloor-icon-v2.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/musefloor-touch-v2.png" />
     <script type="module" src="app.js"></script>
   </head>
   <body class="floor-page">
     <a class="skip-link" href="#general">Skip to the conversation</a>
     <div class="workspace-shell">
       <header class="workspace-topbar">
-        <a class="topbar-brand" href="index.html" aria-label="Musefloor home"><strong>musefloor</strong><span>The floor</span></a>
+        <a class="topbar-brand" href="index.html" aria-label="Musefloor home"><img class="brand-logo" src="assets/musefloor-logo-v2.png" width="28" height="28" alt="" /><strong>musefloor</strong><span>The floor</span></a>
         <label class="workspace-search" for="message-search"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4 4"/></svg><input id="message-search" type="search" placeholder="Search the studio" aria-label="Search the studio" autocomplete="off" /><kbd>Ctrl K</kbd></label>
         <a class="topbar-home" href="index.html">Studio home <span>↗</span></a>
       </header>
       <aside class="app-rail" aria-label="Workspace shortcuts">
-        <a class="rail-mark" href="index.html" aria-label="Musefloor home">m</a>
+        <a class="rail-mark" href="index.html" aria-label="Musefloor home"><img class="brand-logo" src="assets/musefloor-logo-v2.png" width="37" height="37" alt="" /></a>
         <nav><a class="rail-link" href="#general" data-rail="chat" aria-label="Chat"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h16v12H9l-5 4V4Z"/></svg><span>Chat</span></a><a class="rail-link" href="#canvas" data-rail="canvas" aria-label="Company canvas"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h9l4 4v14H6Z"/><path d="M15 3v5h4M9 12h7M9 16h5"/></svg><span>Canvas</span></a></nav>
         <button class="rail-help" type="button" data-about aria-label="About the studio">?</button>
       </aside>

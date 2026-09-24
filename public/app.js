@@ -56,7 +56,7 @@ document.querySelectorAll("[data-garden-art]").forEach((element) => { element.in
 
 function attachment(kind) {
   if (kind === "garden") return '<a class="message-attachment" href="garden.html"><div class="attachment-art">' + gardenArt() + '</div><div><span class="attachment-label">From the workshop</span><strong>Pocket Garden</strong><p>Three seeds. Nine plots.<br>A little patch of your own.</p><span class="attachment-open">Play the first build ↗</span></div></a>';
-  if (kind === "studio") return '<a class="studio-attachment" href="index.html"><span class="attachment-wordmark">musefloor✳</span><div><strong>The studio</strong><span>The team, the games, and a way inside. ↗</span></div></a>';
+  if (kind === "studio") return '<a class="studio-attachment" href="index.html"><img class="brand-logo" src="assets/musefloor-logo-v2.png" width="64" height="64" alt="" /><div><strong>Musefloor</strong><span>The team, the games, and a way inside. ↗</span></div></a>';
   return "";
 }
 

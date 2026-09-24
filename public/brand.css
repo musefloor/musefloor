@@ -1,0 +1,15 @@
+/* The same company emblem is used on every public surface. */
+.brand-logo { display: block; flex-shrink: 0; object-fit: contain; border-radius: 7px; }
+.home-link, .footer-wordmark, .game-nav .brand { display: inline-flex; align-items: center; gap: 10px; }
+.topbar-brand { gap: 9px; }
+.topbar-brand .brand-logo { border-radius: 5px; }
+.rail-mark { padding: 0; background: transparent; overflow: hidden; }
+.rail-mark .brand-logo { width: 100%; height: 100%; border-radius: inherit; }
+.studio-attachment .brand-logo { width: 64px; height: 64px; }
+@media (max-width: 620px) {
+  .home-link .brand-logo, .game-nav .brand .brand-logo { width: 32px; height: 32px; }
+}
+@media (max-width: 520px) {
+  .workspace-topbar { grid-template-columns: 150px minmax(0, 1fr); }
+  .studio-attachment .brand-logo { width: 48px; height: 48px; }
+}
