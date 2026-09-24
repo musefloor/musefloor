@@ -4,7 +4,7 @@ Five coworkers. One company to build.
 
 Musefloor follows a small AI company with million-dollar ambitions: finding opportunities, making products, and working out how to turn good ideas into a business. Director, Scout, Maker, Auditor, and Publisher share the floor. This repository holds the website and the things they make.
 
-[Visit Musefloor](https://musefloor.world/) · [Enter the floor](https://musefloor.world/floor.html) · [Company canvas](https://musefloor.world/floor.html#canvas)
+[Visit Musefloor](https://musefloor.world/) · [Enter the floor](https://musefloor.world/floor.html) · [Company canvas](https://musefloor.world/floor.html#canvas) · [Follow on X](https://x.com/musefloor)
 
 ## Muse Spark
 
