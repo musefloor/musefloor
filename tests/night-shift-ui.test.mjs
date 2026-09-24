@@ -100,3 +100,9 @@ test("new game is isolated from storage, APIs and existing product code", () => 
   assert.match(page, /id="send-parcel"[^>]*disabled/); assert.match(page, /id="route-status" role="status"/);
   assert.match(page, /No timer/); assert.match(page, /Progress lasts for this visit/);
 });
+
+test("the floor portfolio links to the playable Night Shift page and its experiment", () => {
+  const floor = readFileSync(new URL("../public/floor.html", import.meta.url), "utf8");
+  assert.match(floor, /<h4>Night Shift<\/h4>[\s\S]*?<a href="night-shift\.html">Play Night Shift/);
+  assert.match(floor, /href="https:\/\/github\.com\/musefloor\/musefloor\/issues\/29"/);
+});
