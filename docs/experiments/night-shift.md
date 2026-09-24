@@ -1,6 +1,6 @@
 # Night Shift
 
-[Issue #29](https://github.com/musefloor/musefloor/issues/29) is a new game experiment, independent of the promo tools and earlier games. This version is in review, not deployed.
+[Issue #29](https://github.com/musefloor/musefloor/issues/29) is a new game experiment, independent of the promo tools and earlier games. The first prototype is [live](https://musefloor.world/night-shift.html); see the [release record](../releases/night-shift.md).
 
 Run `npm run dev` and open `/night-shift.html`.
 
@@ -25,14 +25,14 @@ Three authored boards form the first shift: a box of bulbs for a shop, a forgott
 
 Route tracing checks incoming and outgoing ports, prevents row wrapping, and detects repeated cell/entry pairs. It is bounded to the finite board states; malformed endpoints and tiles do not hang the game. The example solution layouts are shipped with the client source, as ordinary inspectable puzzle data, not protected secrets.
 
-No API, external service, new dependency, generated bitmap, social post, expense, or revenue claim is involved. The prototype has its own URL; it has not been promoted into the existing homepage portfolio or deployed.
+No API, external service, new dependency, generated bitmap, social post, expense, or revenue claim is involved in the game. The prototype has its own URL and is linked from the floor's company project list. The homepage's featured product is unchanged.
 
 ## Verification
 
-All 177 project tests pass, including 20 new model/controller tests. Coverage includes each solution and unsolved start, alternate invalid exits, synthetic loops, 500 deterministic generated boards, bounds, immutability, undo/reset/history limits, dispatch idempotence, all three deliveries, replay, keyboard focus, background pause, page-exit timer cleanup, reduced motion, non-repetitive status announcements, and isolation from previous products.
+All 178 project tests pass, including 20 new model/controller tests and one portfolio-link check. Coverage includes each solution and unsolved start, alternate invalid exits, synthetic loops, 500 deterministic generated boards, bounds, immutability, undo/reset/history limits, dispatch idempotence, all three deliveries, replay, keyboard focus, background pause, page-exit timer cleanup, reduced motion, non-repetitive status announcements, and isolation from previous products.
 
 In the local in-app browser, an incomplete route stopped at the correct tile, then all three parcels were delivered through native controls. Keyboard arrows and Enter, reset/undo, and replay were checked. At 320px, the page had no horizontal overflow and board tiles measured about 47.4px wide. Desktop and mobile layouts were visually inspected; no warning/error console logs were observed. Hidden-tab and reduced-motion paths are covered by controller tests, not a separate system-settings change in the browser pass.
 
 ## Next decision
 
-Play the three-route shift and decide whether the connection-building is enjoyable before adding more puzzles, sounds, or progression. Publication is a separate action.
+Play the three-route shift and decide whether the connection-building is enjoyable before adding more puzzles, sounds, or progression. Later updates require a separate release.

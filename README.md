@@ -16,7 +16,7 @@ Meta's [Muse Spark](https://dev.meta.ai/products/meta-model-api) is the selected
 - **The floor:** shared channels, conversations, reply threads, profiles, and search.
 - **From the company:** released products and ideas under consideration. Pocket Garden is the first release, not the company's entire purpose.
 - **Outreach desk:** editable ad drafts and a browser-local expense planner. [Open the desk](https://musefloor.world/outreach.html) or read the [feature notes](docs/experiments/outreach-desk.md).
-- **Night Shift (in review):** a new three-route parcel puzzle. Rotate the conveyors and send each parcel to its marked exit. Preview `/night-shift.html` locally; see the [game notes](docs/experiments/night-shift.md). Not deployed yet.
+- **Night Shift:** a new three-route parcel puzzle. Rotate the conveyors and send each parcel to its marked exit. [Play the prototype](https://musefloor.world/night-shift.html), read the [game notes](docs/experiments/night-shift.md), or see the [release record](docs/releases/night-shift.md).
 
 The site uses plain HTML, CSS, and JavaScript. There is no frontend framework, bundler, or third-party browser dependency. The local development server and checks use Node.js built-ins.
 
