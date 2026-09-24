@@ -47,7 +47,7 @@ test("recording format selection requires capture support and negotiates a real 
 
 async function fixture(options = {}) {
   let tickId = 0, timerId = 0, tracksStopped = 0, captures = 0, serial = 0;
-  const ticks = new Map(), timers = new Map(), urls = [], revoked = [], recorders = [], downloads = [];
+  const ticks = new Map(), timers = new Map(), urls = [], revoked = [], recorders = [], downloads = [], headlines = [];
   const root = { hidden: false, listeners: {}, fonts: { load: async () => [] }, addEventListener(event, callback) { this.listeners[event] = callback; } };
   function node() { return { value: "", textContent: "", disabled: false, hidden: true, listeners: {}, attrs: {},
     addEventListener(event, fn) { this.listeners[event] = fn; }, pause() {}, removeAttribute(key) { delete this[key]; },
@@ -69,14 +69,14 @@ async function fixture(options = {}) {
     stop() { this.state = "inactive"; if (options.neverStops) return; this.ondataavailable?.({ data: new Blob(options.empty ? [] : ["clip"]) }); this.onstop?.(); }
   }
   const view = {
-    MediaRecorder: Recorder, Blob,
+    MediaRecorder: Recorder, Blob, crypto: { randomUUID: () => "testtake-rest" },
     URL: { createObjectURL(blob) { const url = "blob:test-" + ++serial; urls.push({url,blob}); return url; }, revokeObjectURL(url) { revoked.push(url); } },
     requestAnimationFrame(fn) { ticks.set(++tickId, fn); return tickId; }, cancelAnimationFrame(id) { ticks.delete(id); },
     setTimeout(fn, delay) { timers.set(++timerId, { fn, delay }); return timerId; }, clearTimeout(id) { timers.delete(id); },
     listeners: {}, addEventListener(event, fn) { this.listeners[event] = fn; },
   };
-  await setupPromo(root, view, { storage: () => ({ getItem: () => null }), draw() {} });
-  const f = { nodes, root, view, recorders, urls, revoked, downloads, timers,
+  await setupPromo(root, view, { storage: () => ({ getItem: () => null }), draw(ctx, frame, headline) { headlines.push(headline); } });
+  const f = { nodes, root, view, recorders, urls, revoked, downloads, timers, headlines,
     get captures() { return captures; }, get tracksStopped() { return tracksStopped; },
     click(id) { if (!nodes[id].disabled) return nodes[id].listeners.click?.(); },
     tick(time) { const next = ticks.entries().next().value; if (next) { ticks.delete(next[0]); next[1](time); } },
@@ -95,7 +95,7 @@ test("preview is explicit and runs without opening a recording stream", async ()
 
 test("a complete recording offers the actual blob and disposes replaced URLs", async () => {
   const f = await fixture(); f.click("record-clip"); f.run();
-  assert.equal(f.nodes["clip-result"].hidden, false); assert.equal(f.nodes["download-clip"].download, "musefloor-lantern-promo.mp4");
+  assert.equal(f.nodes["clip-result"].hidden, false); assert.equal(f.nodes["download-clip"].download, "musefloor-lantern-testtake-1.mp4");
   assert.equal(f.nodes["download-clip"].href, f.nodes["recorded-video"].src); assert.equal(f.urls[0].blob.type, "video/mp4;codecs=avc1.42001e");
   assert.ok(f.tracksStopped > 0); assert.equal(f.timers.size, 0);
   f.click("record-clip"); f.run(); assert.deepEqual(f.revoked, ["blob:test-1"]);
@@ -132,6 +132,33 @@ test("late PNG callbacks cannot unlock or download over a newer export", async (
   f.click("save-still"); f.timeout(5000); f.click("save-still"); callbacks[0](new Blob(["old"]));
   assert.equal(f.nodes["save-still"].disabled, true); assert.equal(f.urls.length, 0);
   callbacks[1](null); assert.match(f.nodes["still-status"].textContent, /could not be saved/); assert.equal(f.nodes["save-still"].disabled, false);
+});
+
+test("post notes snapshot the rendered headline and survive later edits or cancelled takes", async () => {
+  const options = {}, f = await fixture(options); assert.equal(f.nodes["copy-caption"].disabled, true);
+  f.nodes["clip-headline"].value = "First headline"; f.click("record-clip");
+  f.nodes["clip-headline"].value = "Unexpected edit during take"; f.run();
+  assert.equal(f.headlines.at(-1), "First headline");
+  assert.match(f.nodes["post-caption"].value, /^First headline\n/);
+  assert.equal(f.nodes["post-filename"].textContent, f.nodes["download-clip"].download.replace(/\.mp4$/, ".txt"));
+  const caption = f.nodes["post-caption"].value, filename = f.nodes["post-filename"].textContent;
+  f.nodes["clip-headline"].value = "Next headline"; f.nodes["clip-headline"].listeners.input();
+  f.click("record-clip"); f.click("cancel-clip");
+  assert.equal(f.nodes["post-caption"].value, caption); assert.equal(f.nodes["post-filename"].textContent, filename);
+  options.empty = true; f.click("record-clip"); f.run();
+  assert.equal(f.nodes["post-caption"].value, caption); assert.equal(f.nodes["post-filename"].textContent, filename);
+  options.empty = false;
+  f.click("record-clip"); f.run(); assert.match(f.nodes["post-caption"].value, /^Next headline\n/);
+  assert.notEqual(f.nodes["post-filename"].textContent, filename);
+  f.view.listeners.pagehide(); assert.equal(f.nodes["post-caption"].value, ""); assert.equal(f.nodes["copy-caption"].disabled, true);
+});
+
+test("preview and failed first recordings never create a post kit", async () => {
+  for (const options of [{ empty: true }, { constructFail: true }, { startFail: true }, { unsupported: true }]) {
+    const f = await fixture(options); f.click("preview-clip"); f.run(); f.click("record-clip"); f.run();
+    assert.equal(f.nodes["clip-result"].hidden, true); assert.equal(f.nodes["copy-caption"].disabled, true);
+    assert.equal(f.nodes["post-caption"].value, "");
+  }
 });
 
 test("canvas headlines remain bounded and user text is only drawn, never executed", () => {
