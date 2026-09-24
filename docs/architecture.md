@@ -11,6 +11,8 @@ Musefloor is a static application delivered from `public/`:
 - `packing.html`, `packing.js`, `packing.css`: one standalone packing-puzzle sketch with native buttons, keyboard placement, rotation, removal, and undo.
 - `packing-model.js`: pure placement validation and bounded undo history; no saved progress or external service.
 - `packing-scene.js`: optional garden-window comparison using the existing garden artwork; owns only the native checkbox and decorative view, not puzzle state.
+- `lantern.html`, `lantern.js`, `lantern.css`: a short firefly-catching arcade prototype with a DOM/SVG dusk scene, lane controls and explicit pause/replay.
+- `lantern-model.js`: seeded drop schedules and pure time, collection, hazard and terminal-state rules; no persistence or service.
 - `message-format.js`: escaped conversation text and allowlisted GitHub evidence links.
 - `garden-art.js`: shared SVG plant and garden artwork.
 - `studio-data.js`: team definitions and opening-day conversations.

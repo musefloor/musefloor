@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#f5f2e9" />
+    <meta name="description" content="A jar, a little moonlight, and thirty-two seconds. Catch fireflies in a new arcade sketch from Musefloor." />
+    <title>Lantern Catch — Musefloor</title>
+    <link rel="stylesheet" href="lantern.css" />
+    <link rel="stylesheet" href="brand.css" />
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/musefloor-icon-v2.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/musefloor-touch-v2.png" />
+    <script type="module" src="lantern.js"></script>
+  </head>
+  <body>
+    <div class="lantern-page">
+      <header class="lantern-header"><a class="lantern-brand" href="index.html" aria-label="Musefloor home"><img class="brand-logo" src="assets/musefloor-logo-v2.png" width="32" height="32" alt="" />musefloor</a><a href="floor.html#projects">Back to the studio ↗</a></header>
+      <main>
+        <div class="lantern-heading"><div><p class="eyebrow">From the workshop · Arcade sketch</p><h1>Lantern Catch</h1><p>A jarful of light before the evening ends.</p></div><span class="round-note">One small round.<br>Make it glow.</span></div>
+        <section id="catch-game" aria-label="Lantern Catch game">
+          <div class="scoreboard"><div><span>Lights</span><strong id="light-count">0 <small>/ 12</small></strong></div><div><span>Leaves</span><strong id="leaf-count">0 <small>/ 3</small></strong></div><div class="clock-readout"><span>Time left</span><strong id="time-left">32<small>s</small></strong></div><button id="pause-round" type="button" disabled>Pause</button></div>
+          <div class="playfield" id="playfield" role="group" tabindex="0" aria-label="Catching field" aria-describedby="game-help">
+            <svg class="night-art" viewBox="0 0 800 460" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+              <defs><linearGradient id="night-sky" x2="0" y2="1"><stop stop-color="#28283e"/><stop offset="1" stop-color="#646473"/></linearGradient><linearGradient id="night-hill" x2="0" y2="1"><stop stop-color="#515b59"/><stop offset="1" stop-color="#2a3839"/></linearGradient></defs>
+              <path fill="url(#night-sky)" d="M0 0h800v460H0z"/>
+              <g fill="#e5dcbd"><circle cx="675" cy="67" r="26"/><circle cx="112" cy="48" r="1.5"/><circle cx="203" cy="109" r="1"/><circle cx="385" cy="47" r="1.5"/><circle cx="503" cy="89" r="1"/><circle cx="601" cy="29" r="1"/><circle cx="732" cy="153" r="1.5"/></g>
+              <path fill="#393e50" d="M0 267Q126 175 282 235T550 221T800 224v236H0z"/>
+              <path fill="url(#night-hill)" d="M0 321Q180 252 368 298T800 279v181H0z"/>
+              <g stroke="#29373b" stroke-width="10" fill="none" stroke-linecap="round"><path d="M52 380L35 68M43 205L0 136M40 171L102 104M744 373L769 131M756 269L800 216M761 215L717 173"/></g>
+              <g fill="#354544"><ellipse cx="36" cy="366" rx="67" ry="26"/><ellipse cx="769" cy="349" rx="72" ry="37"/><path d="M0 410Q183 385 360 409T800 397v63H0z"/></g>
+              <g stroke="#738078" stroke-width="2" opacity=".6"><path d="M80 424l-5-19m5 19 8-12M175 430l-1-12m0 4 7-5M488 420l-4-20m4 20 9-13M701 419l-5-15m5 15 5-20"/></g>
+            </svg>
+            <div class="lane-guides" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
+            <div id="falling-items" aria-hidden="true"></div>
+            <div id="catch-jar" class="catch-jar" aria-hidden="true"><span class="jar-rim"></span><span class="jar-light"></span><span class="jar-face">· ·</span><span class="jar-base"></span></div>
+            <div class="game-overlay" id="game-overlay"><div class="overlay-note"><span class="note-star" aria-hidden="true">✦</span><h2 id="overlay-title">Catch a little evening.</h2><p id="overlay-copy">Catch 12 fireflies in 32 seconds. Three leaves in the jar end the round.</p><button id="round-action" type="button" disabled>Start catching</button></div></div>
+          </div>
+          <div class="lane-controls" role="group" aria-label="Choose a jar lane"><button type="button" data-lane="0" aria-label="Move jar to lane 1" aria-pressed="false" disabled>1</button><button type="button" data-lane="1" aria-label="Move jar to lane 2" aria-pressed="false" disabled>2</button><button type="button" data-lane="2" aria-label="Move jar to lane 3" aria-pressed="true" disabled>3</button><button type="button" data-lane="3" aria-label="Move jar to lane 4" aria-pressed="false" disabled>4</button><button type="button" data-lane="4" aria-label="Move jar to lane 5" aria-pressed="false" disabled>5</button></div>
+          <div class="game-toolbar"><div class="move-controls"><button id="move-left" type="button" aria-label="Move jar left" disabled>← Left</button><button id="move-right" type="button" aria-label="Move jar right" disabled>Right →</button></div><p id="game-status" role="status" aria-live="polite">Ready when you are.</p></div>
+          <div class="game-explainer"><p id="game-help">Move with ← → or A / D, or choose a lane with 1–5 or the buttons. P or Escape pauses. The round also pauses if you leave the window; resume when you’re ready.</p><div class="legend"><span><i class="legend-light" aria-hidden="true"></i>Firefly · catch</span><span><i class="legend-leaf" aria-hidden="true"></i>Leaf · avoid</span></div></div>
+          <p class="access-note">A visual timing game. You can play without a mouse; reduced-motion settings remove decorative transitions, but falling objects are part of the game.</p>
+        </section>
+        <noscript><p>This game needs JavaScript. You can still read the <a href="floor.html#general">floor conversation</a>.</p></noscript>
+      </main>
+      <footer><span>A first playable. No scores or progress are saved.</span><a href="https://github.com/musefloor/musefloor/issues/13" target="_blank" rel="noopener noreferrer">About the experiment ↗</a></footer>
+    </div>
+  </body>
+</html>
