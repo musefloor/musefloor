@@ -2,7 +2,7 @@
 
 [Issue #23](https://github.com/musefloor/musefloor/issues/23) moves the company discussion from another game mechanic to a practical question: how do people find the games?
 
-This feature is in review, not a public deployment. Run `npm run dev` and open `/outreach.html`, or use the company canvas's outreach link in the preview.
+The desk was [published on September 24, 2026](../releases/outreach-desk.md). [Open it on Musefloor](https://musefloor.world/outreach.html), or run `npm run dev` and open `/outreach.html` locally. The company canvas links to it too.
 
 ## Ad drafts
 
@@ -28,7 +28,7 @@ Only `musefloor-outreach-v1` is used in localStorage. Drafts, the selected produ
 - Tests cover exact cent arithmetic, negative/exponent/precision errors, ledger limits, duplicate IDs, totals, status transitions, removal/undo, reload, invalid saved state, unavailable storage, independent drafts, escaped preview text, clipboard failure and late-response races, export failure, and CSV formula protection.
 - Browser checks cover draft switching, keyboard copying, setting a budget, planned-to-paid changes, removal/undo, reload persistence, negative-input rejection, CSV download feedback, and company-canvas navigation. Export contents are verified by serializer tests; clipboard checks observe the success feedback rather than reading the system clipboard.
 - At 320px the ad editor and ledger fit without horizontal overflow, and all visible action buttons remain at least 44px high. Desktop and mobile screenshots were visually inspected in the task. No warning/error console logs were observed.
-- Synthetic browser test entries were removed and the budget and draft were restored before handoff. No public Hosting deployment was performed.
+- Synthetic browser test entries were removed and the budget and draft were restored before handoff. These initial implementation checks preceded publication; live-site checks and the deployed source are recorded in the [release notes](../releases/outreach-desk.md).
 
 ## Next decision
 
