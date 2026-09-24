@@ -1,4 +1,4 @@
-import { items, bagSize, shape, occupied, canPlace, newPacking, place, remove, undo, isPacked } from "./packing-model.js";
+import { items, bagSize, shape, occupied, canPlace, placementIssue, newPacking, place, remove, undo, isPacked } from "./packing-model.js";
 
 let state = newPacking(), selected = null, turns = 0, reopened = false;
 const grid = document.querySelector("#bag-grid");
@@ -65,8 +65,14 @@ grid.addEventListener("click", (event) => {
     if (id) select(id); else status.textContent = "Choose an object from the tray first.";
     return;
   }
-  if (!canPlace(state.placements,selected,x,y,turns)) {
-    status.textContent = "That does not fit there. Try another position or rotation. Nothing has moved.";
+  const issue = placementIssue(state.placements,selected,x,y,turns);
+  if (issue) {
+    const reason = issue.reason === "outside"
+      ? `${items[selected].name} would extend outside the bag.`
+      : issue.reason === "overlap"
+        ? `${items[selected].name} would overlap ${issue.blockers.map((id) => items[id].name).join(", ")}.`
+        : "That position is not available.";
+    status.textContent = `${reason} Try another position or rotation. Nothing has moved.`;
     preview(index); return;
   }
   const next = place(state,selected,x,y,turns);

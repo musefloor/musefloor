@@ -26,12 +26,20 @@ export function occupied(placements, except) {
   return board;
 }
 
-export function canPlace(placements, id, x, y, turns = 0) {
-  if (![x,y,turns].every(Number.isInteger)) return false;
+export function placementIssue(placements, id, x, y, turns = 0) {
+  if (![x,y,turns].every(Number.isInteger)) return { reason: "invalid" };
   const cells = shape(id, turns);
-  if (!cells.length) return false;
+  if (!cells.length) return { reason: "invalid" };
+  if (cells.some(([dx,dy]) => x + dx < 0 || y + dy < 0 || x + dx >= bagSize || y + dy >= bagSize)) {
+    return { reason: "outside" };
+  }
   const board = occupied(placements, id);
-  return cells.every(([dx,dy]) => x + dx >= 0 && y + dy >= 0 && x + dx < bagSize && y + dy < bagSize && !board.has(`${x+dx},${y+dy}`));
+  const blockers = [...new Set(cells.map(([dx,dy]) => board.get(`${x+dx},${y+dy}`)).filter(Boolean))].sort();
+  return blockers.length ? { reason: "overlap", blockers } : null;
+}
+
+export function canPlace(placements, id, x, y, turns = 0) {
+  return placementIssue(placements, id, x, y, turns) === null;
 }
 
 export const newPacking = () => ({ placements: {}, history: [] });
