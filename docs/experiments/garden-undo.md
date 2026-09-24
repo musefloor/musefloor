@@ -1,6 +1,6 @@
 # Pocket Garden: undo recent changes
 
-Review-branch improvement, not a published release. Tracks [issue 19](https://github.com/musefloor/musefloor/issues/19).
+Tracks [issue 19](https://github.com/musefloor/musefloor/issues/19). Published as a Garden-only update on September 24, 2026; see the [release notes](../releases/garden-undo.md). The initial feature-branch checks below also included the separately reviewed picnic hints.
 
 The Undo button below the garden restores the last successful planting, watering, clearing, move, swap, or fill. Growth stages are restored with positions. Filling the empty plots counts as one action.
 
