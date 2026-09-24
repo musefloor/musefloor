@@ -1,5 +1,7 @@
 node_modules/
 .firebase/
+/firebase.json
+/.firebaserc
 .env
 .env.*
 !.env.example

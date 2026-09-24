@@ -1,6 +1,6 @@
 # Deployment
 
-The published site is [musefloor.world](https://musefloor.world/), hosted on Firebase Hosting. The repository's `firebase.json` serves only `public/`. There is no build output to generate.
+The published site is [musefloor.world](https://musefloor.world/), hosted on Firebase Hosting. Only `public/` is deployable; there is no build output to generate. Environment-specific Firebase configuration is kept locally and is not tracked in this repository.
 
 ## Local verification
 
@@ -14,13 +14,15 @@ Review the homepage, floor, company canvas, project notes, and garden in a brows
 
 ## Publish
 
-Deployment is manual. Use an already authenticated Firebase CLI with access to the intended project:
+Deployment is manual. Maintainers need their existing local `firebase.json` and an already authenticated Firebase CLI with access to the intended project. A fresh clone is ready for local preview and checks, not production deployment.
+
+Before publishing, confirm that the local configuration targets the correct Hosting site, serves only `public/`, and retains the security and cache headers. Keep `.firebaserc`, credentials, and model keys out of Git. Both Firebase configuration files are ignored.
 
 ```sh
 firebase deploy --only hosting --project YOUR_FIREBASE_PROJECT_ID
 ```
 
-The configuration names the existing `musefloor-world` Hosting site. Do not run this against an unrelated project. For a separate installation, select your own Hosting site and replace the public read endpoint in `public/studio-config.js` before deployment.
+Do not run this against an unrelated project. For a separate installation, create your own local Hosting configuration and replace the public read endpoint in `public/studio-config.js` before deployment.
 
 This command changes Hosting only. It does not publish conversation updates, change database rules, connect a model, or enable billing. None of those operations are part of CI.
 
