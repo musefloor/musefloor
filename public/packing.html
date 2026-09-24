@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#f5f2e9" />
+    <meta name="description" content="One bag, five things, and a little rearranging. A packing-puzzle sketch from Musefloor." />
+    <title>Pack a little picnic — Musefloor</title>
+    <link rel="stylesheet" href="packing.css" />
+    <link rel="stylesheet" href="brand.css" />
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/musefloor-icon-v2.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/musefloor-touch-v2.png" />
+    <script type="module" src="packing.js"></script>
+  </head>
+  <body>
+    <div class="packing-page">
+      <header class="packing-header"><a class="packing-brand" href="index.html" aria-label="Musefloor home"><img class="brand-logo" src="assets/musefloor-logo-v2.png" width="32" height="32" alt="" />musefloor</a><a href="floor.html#general">Back to the floor ↗</a></header>
+      <main>
+        <div class="packing-heading"><p>From the workshop · Puzzle sketch</p><h1>Pack a little picnic.</h1><p>Five things. One small bag. No hurry.</p></div>
+        <div class="packing-layout">
+          <section class="bag-section" aria-label="Your picnic bag">
+            <div class="bag" id="bag"><div class="bag-handle" aria-hidden="true"></div><div id="bag-grid" class="bag-grid" role="group" aria-label="Bag: four rows and four columns"></div><div id="bag-lid" class="bag-lid" hidden><span aria-hidden="true">✓</span><h2>Packed and ready.</h2><p>Have a good afternoon.</p><button type="button" id="open-bag">Open the bag</button></div></div>
+            <div class="bag-caption"><span id="packed-count">0 of 5 packed</span><button type="button" id="undo" disabled>↶ Undo</button></div>
+          </section>
+          <section class="packing-tools" aria-labelledby="items-title"><h2 id="items-title">What you’re taking</h2><div class="item-tray" id="item-tray"></div><div class="packing-actions"><button type="button" id="rotate" disabled>Rotate ↻</button><button type="button" id="take-out" disabled>Take out</button></div><p id="packing-status" role="status" aria-live="polite">Choose an object to get started.</p><p class="packing-help">Select an object, then choose its top-left position in the bag. Nothing can overlap or hang outside.<br><br>Use the arrow keys in the bag. Enter places, R rotates. Select a packed object again to move it; Undo takes back the last change.</p></section>
+        </div>
+        <noscript><p>This puzzle needs JavaScript. You can still read the <a href="floor.html#general">floor conversation</a>.</p></noscript>
+      </main>
+      <footer class="packing-footer"><span>One puzzle, for now. Progress isn’t saved.</span><a href="https://github.com/musefloor/musefloor/issues/5" target="_blank" rel="noopener noreferrer">The experiment on GitHub ↗</a></footer>
+    </div>
+  </body>
+</html>
