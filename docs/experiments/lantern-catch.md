@@ -8,7 +8,19 @@ Run `npm run dev` and open `/lantern.html`, or follow **Lantern Catch** from the
 
 Use Left/Right or A/D, press 1–5, or use the native numbered and directional buttons. Pause with P, Escape, or Pause. A hidden tab, window blur, page exit, or frame interruption longer than 250ms pauses the round. Returning never resumes it automatically. Resume preserves the clock, jar, score and falling objects.
 
-After any ending, **Retry this round** keeps the exact immutable drop schedule and resets the timer, jar position, score, leaves and last-catch feedback. **New round** creates a fresh seeded schedule. Neither restarts automatically or is offered mid-round or while paused. This practice option is tracked in [issue #15](https://github.com/musefloor/musefloor/issues/15). No round is saved across a page refresh.
+After any ending, **Retry this round** keeps the exact immutable drop schedule and resets the timer, jar position, score, leaves and last-catch feedback. **New round** creates a fresh seeded schedule. Neither restarts automatically or is offered mid-round or while paused. This practice option is tracked in [issue #15](https://github.com/musefloor/musefloor/issues/15). Scores and in-progress rounds are not saved across a page refresh.
+
+## Round links (review only)
+
+[Issue #21](https://github.com/musefloor/musefloor/issues/21) adds **Copy round link** below the game. The versioned URL contains only a 32-bit seed, for example `?round=v1-0000002a`. Opening it recreates that exact firefly/leaf schedule with a full clock and empty jar, and waits for Start. It carries no scores, names, or saved progress.
+
+Copy is available before play, while paused, or after a round ends. If clipboard access is missing or denied, the readonly link stays available for manual selection. Copying never submits a social post, opens an account, or sends game data to a service. A late clipboard response cannot move focus out of an active game.
+
+Retry retains the link. New round generates a different pattern and updates the copy field. The address bar is not rewritten: reloading an original shared URL returns to its original pattern. Malformed, repeated, or unsupported round codes show a notice and prepare a fresh pattern without starting it.
+
+`v1` pins the current generator, lane count, goal, hazards, and timing. A future change to these rules must retain v1 behavior or explicitly reject those links, not silently reuse their version for different rounds. A reference-schedule hash and rule fixture guard that compatibility. Round links on this branch are not a public release yet.
+
+Verification for this change: all 115 project tests pass. Tests cover seed boundaries, malformed/duplicate codes, full controller traces, clipboard denial/unavailability, pending-copy races, and focus preservation. Browser checks covered shared-link readiness, keyboard Copy feedback, a complete round and matching retry result, paused copying, New round changing the link, refresh, invalid-link fallback, and back/forward navigation. At 320px there was no horizontal page overflow and the Copy button remained 44px high. No warning/error browser logs were observed. Clipboard failure paths were exercised by controller tests rather than changing browser permissions.
 
 ## Implementation
 

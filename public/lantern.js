@@ -1,4 +1,5 @@
 import { rules, newRound, retryRound, startRound, pauseRound, resumeRound, moveJar, advanceRound, visibleDrops } from "./lantern-model.js";
+import { readRoundLink, roundLink } from "./lantern-links.js";
 
 export function setupLantern(root, view = root.defaultView) {
   const get = id => root.querySelector(`#${id}`);
@@ -7,11 +8,31 @@ export function setupLantern(root, view = root.defaultView) {
   const lights = get("light-count"), leaves = get("leaf-count"), clock = get("time-left"), status = get("game-status");
   const pause = get("pause-round"), left = get("move-left"), right = get("move-right");
   const retry = get("retry-round"), replayHelp = get("replay-help");
+  const link = get("round-link"), copyLink = get("copy-round"), copyStatus = get("copy-status");
   const lanes = [...game.querySelectorAll("[data-lane]")];
-  let state = newRound(), frame = null, lastFrame = null, roundNumber = 0, lastAnnouncement = null;
+  const shared = readRoundLink(view.location?.search || "");
+  let roundNumber = 0, copyRequest = 0, copying = false;
+  const nextSeed = () => ((Date.now() >>> 0) + roundNumber++) >>> 0;
+  let state = newRound(shared.kind === "shared" ? shared.seed : nextSeed());
+  let frame = null, lastFrame = null, lastAnnouncement = null;
+  if (shared.kind === "shared") {
+    title.textContent = "A round from a friend.";
+    status.textContent = "Shared pattern loaded. Your jar is empty; start when you are ready.";
+  } else if (shared.kind === "invalid") {
+    status.textContent = "That round link is not supported. A fresh pattern is ready instead.";
+  }
+
+  function updateShareLink() {
+    copyRequest++;
+    copying = false;
+    link.value = roundLink(state.seed);
+    copyStatus.textContent = "";
+  }
 
   function render() {
     const running = state.status === "running";
+    copyLink.disabled = running || copying;
+    link.disabled = running;
     lights.innerHTML = `${state.caught} <small>/ ${rules.target}</small>`;
     leaves.innerHTML = `${state.leaves} <small>/ ${rules.maxLeaves}</small>`;
     clock.innerHTML = `${Math.ceil(Math.max(0, rules.duration - state.elapsed))}<small>s</small>`;
@@ -77,7 +98,16 @@ export function setupLantern(root, view = root.defaultView) {
     if (state.status === "running" || (samePattern && state.status !== "finished")) return;
     stopFrames();
     if (state.status === "paused") state = resumeRound(state);
-    else { state = startRound(samePattern ? retryRound(state) : newRound(((Date.now() >>> 0) + roundNumber++) >>> 0)); lastAnnouncement = null; }
+    else {
+      if (samePattern) state = retryRound(state);
+      else if (state.status === "finished") {
+        const seed = nextSeed();
+        state = newRound(seed === state.seed ? (seed + 1) >>> 0 : seed);
+      }
+      state = startRound(state);
+      lastAnnouncement = null;
+    }
+    updateShareLink();
     status.textContent = "Catch the glowing fireflies. Leave the leaves alone.";
     render(); game.scrollIntoView({ block: "start" }); field.focus({ preventScroll: true });
     if (root.hidden) pauseGame("Paused while this tab is hidden.", false);
@@ -85,6 +115,24 @@ export function setupLantern(root, view = root.defaultView) {
   }
 
   function move(lane) { state = moveJar(state, lane); render(); }
+  copyLink.addEventListener("click", async () => {
+    if (state.status === "running" || copying) return;
+    const request = ++copyRequest, url = link.value;
+    copying = true; copyLink.disabled = true;
+    try {
+      if (!view.navigator?.clipboard?.writeText) throw new Error("Clipboard unavailable");
+      await view.navigator.clipboard.writeText(url);
+      if (request === copyRequest) copyStatus.textContent = "Round link copied. Same pattern, a fresh jar.";
+    } catch {
+      if (request === copyRequest) {
+        copyStatus.textContent = "Copy was unavailable. Select the link above and copy it manually.";
+        if (root.activeElement === copyLink) { link.focus(); link.select(); }
+      }
+    } finally {
+      // A late clipboard response must not steal focus or change a new round.
+      if (request === copyRequest) { copying = false; copyLink.disabled = false; }
+    }
+  });
   action.addEventListener("click", () => play());
   retry.addEventListener("click", () => play(true));
   pause.addEventListener("click", () => state.status === "paused" ? play() : pauseGame());
@@ -106,7 +154,7 @@ export function setupLantern(root, view = root.defaultView) {
   root.addEventListener("visibilitychange", () => { if (root.hidden) pauseGame("Paused while you were away. Resume when you're ready.", false); });
   view.addEventListener("blur", () => pauseGame("Paused while you were away. Resume when you're ready.", false));
   view.addEventListener("pagehide", () => pauseGame("Paused while you were away. Resume when you're ready.", false));
-  render();
+  updateShareLink(); render();
 }
 
 if (typeof document !== "undefined") setupLantern(document);

@@ -151,23 +151,23 @@ test("retry cannot reset a ready, running or paused round", () => {
   for (const state of [ready, running, pauseRound(running)]) assert.strictEqual(retryRound(state), state);
 });
 
-function controllerFixture() {
+function controllerFixture({ search = "", clipboard } = {}) {
   const root={hidden:false,activeElement:null,listeners:new Map(),addEventListener(type,fn){this.listeners.set(type,fn);}};
   function element() {
     return { textContent:"",innerHTML:"",hidden:false,disabled:false,dataset:{},attributes:{},listeners:new Map(),
       style:{setProperty(key,value){this[key]=value;}},classList:{toggle(){}},
       addEventListener(type,fn){this.listeners.set(type,fn);},
-      setAttribute(key,value){this.attributes[key]=value;},focus(){root.activeElement=this;},scrollIntoView(options){this.scrolled=options;} };
+      setAttribute(key,value){this.attributes[key]=value;},focus(){root.activeElement=this;},select(){this.selected=true;},scrollIntoView(options){this.scrolled=options;} };
   }
-  const ids=["catch-game","playfield","falling-items","catch-jar","game-overlay","overlay-title","overlay-copy","round-action","retry-round","replay-help","light-count","leaf-count","time-left","game-status","pause-round","move-left","move-right"];
+  const ids=["catch-game","playfield","falling-items","catch-jar","game-overlay","overlay-title","overlay-copy","round-action","retry-round","replay-help","light-count","leaf-count","time-left","game-status","pause-round","move-left","move-right","round-link","copy-round","copy-status"];
   const nodes=Object.fromEntries(ids.map(id=>[id,element()]));
   const lanes=Array.from({length:5},(_,index)=>({...element(),dataset:{lane:String(index)}}));
   nodes["catch-game"].querySelectorAll=()=>lanes;
   root.querySelector=selector=>nodes[selector.slice(1)];
   const frames=new Map();let next=0;
-  const view={listeners:new Map(),requestAnimationFrame(fn){frames.set(++next,fn);return next;},cancelAnimationFrame(id){frames.delete(id);},addEventListener(type,fn){this.listeners.set(type,fn);}};
+  const view={location:{search},navigator:{clipboard},listeners:new Map(),requestAnimationFrame(fn){frames.set(++next,fn);return next;},cancelAnimationFrame(id){frames.delete(id);},addEventListener(type,fn){this.listeners.set(type,fn);}};
   setupLantern(root,view);
-  const click=node=>{if(!node.disabled)node.listeners.get("click")();};
+  const click=node=>{if(!node.disabled){node.focus();return node.listeners.get("click")();}};
   const frame=time=>{const entry=frames.entries().next().value;if(entry){frames.delete(entry[0]);entry[1](time);}};
   const key=(key,props={})=>{const event={key,defaultPrevented:false,preventDefault(){this.defaultPrevented=true;},...props};nodes["catch-game"].listeners.get("keydown")(event);return event;};
   return {root,nodes,lanes,view,frames,click,frame,key};
@@ -288,4 +288,100 @@ test("the new game has labelled native controls, reduced decoration and no exter
   assert.match(css,/\.scoreboard\{position:sticky;top:12px/);
   assert.doesNotMatch(js,/fetch\(|localStorage|sessionStorage|setInterval|setTimeout/);
   assert.match(read("floor.html"),/href="lantern.html">Play the sketch/);
+});
+
+test("a shared link stays ready, starts the exact same pattern, and Retry preserves its link", t => {
+  t.mock.method(Date, "now", () => 42);
+  const shared = controllerFixture({ search: "?round=v1-0000002a" });
+  const ordinary = controllerFixture();
+  assert.equal(shared.frames.size, 0);
+  assert.match(shared.nodes["game-status"].textContent, /Shared pattern loaded/);
+  const url = shared.nodes["round-link"].value;
+  const trace = (f, button) => {
+    f.click(button); const rows = [];
+    for (let time = 0; time <= 34000 && f.frames.size; time += 50) {
+      f.frame(time);
+      if (time % 500 === 0) rows.push([f.nodes["falling-items"].innerHTML, f.nodes["light-count"].innerHTML, f.nodes["leaf-count"].innerHTML]);
+    }
+    return rows;
+  };
+  const original = trace(ordinary, ordinary.nodes["round-action"]);
+  assert.deepEqual(trace(shared, shared.nodes["round-action"]), original);
+  assert.deepEqual(trace(shared, shared.nodes["retry-round"]), original);
+  assert.equal(shared.nodes["round-link"].value, url);
+  shared.click(shared.nodes["round-action"]);
+  assert.notEqual(shared.nodes["round-link"].value, url, "New round differs even if the clock produces the shared seed");
+});
+
+test("invalid links disclose a fresh fallback and never start automatically", () => {
+  for (const search of ["?round=v2-0000002a", "?round=v1-0000002a&round=v1-0000002b", "?round=oops"]) {
+    const f = controllerFixture({ search });
+    assert.match(f.nodes["game-status"].textContent, /not supported.*fresh pattern/);
+    assert.equal(f.frames.size, 0);
+    assert.match(f.nodes["round-link"].value, /^https:\/\/musefloor\.world\/lantern\.html\?round=v1-[0-9a-f]{8}$/);
+  }
+});
+
+test("copying is explicit, paused or ready only, and excludes score and extra URL data", async () => {
+  const copied = [];
+  const f = controllerFixture({ search: "?round=v1-00000000&score=12&name=friend", clipboard: { async writeText(url) { copied.push(url); } } });
+  assert.deepEqual(copied, []);
+  await f.click(f.nodes["copy-round"]);
+  assert.deepEqual(copied, ["https://musefloor.world/lantern.html?round=v1-00000000"]);
+  assert.match(f.nodes["copy-status"].textContent, /Round link copied/);
+  f.click(f.nodes["round-action"]);
+  assert.equal(f.nodes["copy-round"].disabled, true); assert.equal(f.nodes["round-link"].disabled, true);
+  await f.nodes["copy-round"].listeners.get("click")(); assert.equal(copied.length, 1);
+  f.key("p"); const clock = f.nodes["time-left"].innerHTML;
+  await f.click(f.nodes["copy-round"]);
+  assert.equal(copied.length, 2); assert.equal(f.frames.size, 0);
+  assert.equal(f.nodes["time-left"].innerHTML, clock);
+});
+
+test("missing or denied clipboard offers a selected manual-copy link", async () => {
+  for (const clipboard of [undefined, { async writeText() { throw new Error("denied"); } }]) {
+    const f = controllerFixture({ clipboard });
+    await f.click(f.nodes["copy-round"]);
+    assert.match(f.nodes["copy-status"].textContent, /copy it manually/);
+    assert.equal(f.root.activeElement, f.nodes["round-link"]);
+    assert.equal(f.nodes["round-link"].selected, true);
+    assert.equal(f.nodes["copy-round"].disabled, false);
+    assert.equal(f.frames.size, 0);
+  }
+});
+
+test("pending clipboard requests cannot duplicate or interfere with a started round", async () => {
+  for (const denied of [false, true]) {
+    let settle, calls = 0;
+    const f = controllerFixture({ clipboard: { writeText() {
+      calls++; return new Promise((resolve, reject) => { settle = () => denied ? reject(new Error("denied")) : resolve(); });
+    } } });
+    const pending = f.click(f.nodes["copy-round"]);
+    assert.equal(f.nodes["copy-round"].disabled, true);
+    await f.nodes["copy-round"].listeners.get("click")(); assert.equal(calls, 1);
+    f.click(f.nodes["round-action"]); settle(); await pending;
+    assert.equal(f.nodes["copy-round"].disabled, true);
+    assert.equal(f.nodes["copy-status"].textContent, "");
+    assert.equal(f.root.activeElement, f.nodes.playfield);
+    assert.equal(f.frames.size, 1);
+    f.key("p"); assert.equal(f.nodes["copy-round"].disabled, false);
+  }
+});
+
+test("manual-copy fallback does not steal focus if the user leaves the copy button", async () => {
+  let reject;
+  const f = controllerFixture({ clipboard: { writeText() { return new Promise((_, fail) => { reject = fail; }); } } });
+  const pending = f.click(f.nodes["copy-round"]);
+  f.nodes["round-action"].focus(); reject(new Error("denied")); await pending;
+  assert.equal(f.root.activeElement, f.nodes["round-action"]);
+  assert.equal(f.nodes["round-link"].selected, undefined);
+});
+
+test("sharing has labelled native controls outside game-key handling and no automatic posting", () => {
+  const html = readFileSync(new URL("../public/lantern.html", import.meta.url), "utf8");
+  assert.match(html, /<label for="round-link">Link to this pattern<\/label>/);
+  assert.match(html, /id="round-link" type="text" readonly/);
+  assert.match(html, /id="copy-round" type="button" disabled>Copy round link/);
+  assert.match(html, /<\/section>\s*<section class="round-share"/);
+  assert.match(html, /No scores or progress are included/);
 });
