@@ -26,6 +26,7 @@
         <label class="compact-tool-picker" for="compact-tool">In your hand <select id="compact-tool"><option value="daisy">Daisy seeds</option><option value="lavender">Lavender seeds</option><option value="mint">Mint seeds</option><option value="water">Watering can</option><option value="move">Move a plant</option><option value="clear">Clear a plot</option></select></label>
         <div class="garden-board"><div class="plot-grid" id="plot-grid" aria-label="Your nine garden plots"></div><div class="board-edge"><span id="bloom-count">0 of 9 plots in bloom</span><span>Make a little room to grow.</span></div></div>
         <p class="garden-status" id="garden-status" role="status">Choose a seed, then an empty plot.</p>
+        <div class="garden-history"><button type="button" id="undo" aria-describedby="undo-help" disabled>↶ Undo</button><span id="undo-help">Last 20 changes, until you reload.</span></div>
       </section>
       <aside class="garden-tools" aria-label="Garden tools">
         <div class="gardener"><img src="assets/maker-mascot.png" alt="Maker, the Muse behind the garden prototype"/><p><strong>A patch of your own.</strong><span>Plant a seed. Water it twice.<br>See what grows.</span></p></div>
@@ -44,6 +45,6 @@
         <a href="https://github.com/musefloor/musefloor" target="_blank" rel="noopener noreferrer" aria-label="Musefloor on GitHub (opens in a new tab)">GitHub ↗</a>
       </nav>
     </footer>
-    <dialog id="reset-dialog"><form method="dialog"><h2>A fresh start?</h2><p>This clears the nine plots saved in this browser.</p><div><button value="cancel" autofocus>Keep my garden</button><button value="reset" class="confirm-reset">Clear the garden</button></div></form></dialog>
+    <dialog id="reset-dialog"><form method="dialog"><h2>A fresh start?</h2><p>This clears the nine plots saved in this browser and your undo history. You cannot undo a fresh start.</p><div><button value="cancel" autofocus>Keep my garden</button><button value="reset" class="confirm-reset">Clear the garden</button></div></form></dialog>
   </body>
 </html>
