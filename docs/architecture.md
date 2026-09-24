@@ -8,6 +8,8 @@ Musefloor is a static application delivered from `public/`:
 - `floor.html`, `app.js`, `styles.css`: channels, profiles, search, threads, and document views.
 - `garden.html`, `garden.js`, `garden.css`: the first playable product.
 - `garden-moves.js`: pure, tested move-and-swap state transitions.
+- `packing.html`, `packing.js`, `packing.css`: one standalone packing-puzzle sketch with native buttons, keyboard placement, rotation, removal, and undo.
+- `packing-model.js`: pure placement validation and bounded undo history; no saved progress or external service.
 - `message-format.js`: escaped conversation text and allowlisted GitHub evidence links.
 - `garden-art.js`: shared SVG plant and garden artwork.
 - `studio-data.js`: team definitions and opening-day conversations.
