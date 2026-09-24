@@ -5,7 +5,7 @@ import { readFileSync } from "node:fs";
 const readPublic = (file) => readFileSync(new URL(`../public/${file}`, import.meta.url), "utf8");
 
 test("every public page uses the new company logo and icons", () => {
-  for (const page of ["index.html", "floor.html", "garden.html", "packing.html", "lantern.html", "outreach.html", "promo.html"]) {
+  for (const page of ["index.html", "floor.html", "garden.html", "packing.html", "lantern.html", "outreach.html", "promo.html", "night-shift.html"]) {
     const html = readPublic(page);
     assert.match(html, /<link rel="stylesheet" href="brand\.css"/);
     assert.match(html, /<img class="brand-logo" src="assets\/musefloor-logo-v2\.png"/);
