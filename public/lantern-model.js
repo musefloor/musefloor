@@ -9,16 +9,17 @@ export function makeDrops(seed = 1) {
   }));
 }
 
-function readyRound(drops) {
-  return { status: "ready", outcome: null, elapsed: 0, lane: 2, caught: 0, leaves: 0, lastEvent: null, drops };
+function readyRound(drops, seed) {
+  return { status: "ready", outcome: null, elapsed: 0, lane: 2, caught: 0, leaves: 0, lastEvent: null, drops, seed };
 }
 
 export function newRound(seed = 1) {
-  return readyRound(makeDrops(seed));
+  const normalized = Number.isInteger(seed) ? seed >>> 0 : 1;
+  return readyRound(makeDrops(normalized), normalized);
 }
 
 export function retryRound(state) {
-  return state.status === "finished" ? readyRound(state.drops) : state;
+  return state.status === "finished" ? readyRound(state.drops, state.seed) : state;
 }
 
 export function startRound(state) {
