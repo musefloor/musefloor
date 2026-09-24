@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#183b3b" /><meta name="description" content="Rotate the conveyors. Find the connection. Send three little parcels home. A new routing puzzle from Musefloor." />
+  <title>Night Shift — Musefloor</title>
+  <link rel="stylesheet" href="night-shift.css" /><link rel="stylesheet" href="brand.css" />
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/musefloor-icon-v2.png" /><link rel="apple-touch-icon" sizes="180x180" href="assets/musefloor-touch-v2.png" />
+  <script type="module" src="night-shift.js"></script>
+</head>
+<body>
+  <div class="night-page">
+    <header class="night-header"><a class="night-brand" href="index.html" aria-label="Musefloor home"><img class="brand-logo" src="assets/musefloor-logo-v2.png" width="32" height="32" alt="" />musefloor</a><a href="floor.html#general">Back to the floor ↗</a></header>
+    <main>
+      <div class="night-heading"><div><p class="eyebrow">A little after-hours puzzle</p><h1>Night shift.</h1><p>Three parcels. A few wrong turns. Everybody gets home.</p></div><span class="night-mark" aria-hidden="true">☾</span></div>
+      <div class="sorting-desk">
+        <section class="machine" aria-labelledby="route-title">
+          <div class="machine-label"><span>ROUTING DESK / 04</span><span id="route-number">PARCEL 01 OF 03</span></div>
+          <h2 id="route-title">The corner shop</h2>
+          <div class="board-frame"><div class="board-wrap"><div id="conveyor-board" class="conveyor-board" role="group" aria-label="Conveyors: four rows and four columns" aria-describedby="board-help"></div><span id="entry-marker" class="dock-marker" aria-hidden="true">IN</span><span id="exit-marker" class="dock-marker exit" aria-hidden="true">A</span></div></div>
+          <div class="machine-controls"><button type="button" id="send-parcel" class="dispatch" disabled>Dispatch parcel →</button><button type="button" id="undo-turn" disabled>Undo turn</button><button type="button" id="reset-route" disabled>Reset route</button></div>
+          <p id="route-status" role="status" class="route-status">Preparing the desk…</p>
+          <p id="board-help" class="board-help">Rotate a tile with a click or tap. Join IN to the marked exit, then dispatch. Tab enters the board; arrow keys move between tiles, Enter or Space rotates, and Home/End moves to a row edge. No timer. Nothing gets lost.</p>
+        </section>
+        <aside class="dispatch-notes" aria-label="Parcel and shift notes">
+          <section class="parcel-card"><div class="ticket-top"><span>OUTBOUND</span><span id="parcel-code">A</span></div><p class="ticket-label">Deliver to</p><h2 id="recipient">Mara / Corner Shop</h2><p id="parcel-note">One small box of replacement bulbs.</p><div class="ticket-rule"></div><p id="dock-instructions">Enter row 2 from the west. Leave row 3 to the east.</p><div class="parcel-art" aria-hidden="true"><span>FRAGILE</span></div></section>
+          <section class="manifest"><h2>Tonight’s manifest</h2><ol id="manifest-list"></ol><p id="shift-count">0 of 3 delivered</p><button type="button" id="next-parcel" hidden>Next parcel →</button><button type="button" id="replay-shift" hidden>Work another shift ↻</button></section>
+        </aside>
+      </div>
+      <noscript><p>This puzzle needs JavaScript. You can still visit <a href="floor.html#general">the floor</a>.</p></noscript>
+    </main>
+    <footer class="night-footer"><span>Three routes for now. Progress lasts for this visit.</span><a href="https://github.com/musefloor/musefloor/issues/29" target="_blank" rel="noopener noreferrer">About the experiment ↗</a></footer>
+  </div>
+</body>
+</html>
